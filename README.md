@@ -1,2 +1,2 @@
 # NBA-WP
- Analysis of NBA in-season win probability
+ Analysis of NBA in-season winning percentage
