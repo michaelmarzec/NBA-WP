@@ -19,7 +19,6 @@ import sys
 import gviz_api
 import json
 
-
 ## Functions ##
 def data_ingest(file_name='static/22_23_wp_final_results.csv'):
 	df = pd.read_csv(file_name)
