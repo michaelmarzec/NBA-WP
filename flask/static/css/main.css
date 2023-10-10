@@ -1,0 +1,57 @@
+/* includes alternating gray and white with on-hover color */
+
+table {
+    text-align: center;
+    font-size: 11pt;
+    font-family: Arial;
+    border-collapse: collapse; 
+    border: 1px solid silver;
+}
+
+td, th {
+    padding: 5px;
+}
+
+tr:nth-child(even) {
+    background: #E0E0E0;
+}
+
+tr:hover {
+    background: silver;
+    cursor: pointer;
+}
+
+.redirect{
+    font-size: 18px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+.footer{
+    clear: both;
+    font-size:  16px;
+    color: #555555;
+    text-align: left;
+    padding-top: 2px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    background-color: #f2f2f2;
+    line-height: 1.5em;
+}
+
+.header{
+    clear: both;
+    font-size:  40px;
+    color: #212121;
+    text-align: center;
+    margin:  0;
+}
+
+.sub-header{
+    clear: both;
+    font-size:  20px;
+    color: #212121;
+    text-align: center;
+    font-style: italic;
+}

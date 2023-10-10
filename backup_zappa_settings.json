@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "app_function": "app.app",
+        "aws_region": "us-east-2",
+        "profile_name": "default",
+        "project_name": "flask",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-flask-nba-wp-analysis",
+        "slim_handler": true,
+        // "certificate_arn": "arn:aws:acm:us-east-1:294623768240:certificate/474b40ff-4433-4df2-a048-6a50f80b0c7d",
+        // "certificate_arn": "arn:aws:acm:us-east-1:294623768240:certificate/11e6e71b-b6d5-4141-a781-49791eec917c",
+        "domain": "nbawp.com"
+    }
+}

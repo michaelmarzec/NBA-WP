@@ -1,0 +1,13 @@
+{
+    "dev": {
+        "app_function": "app.app",
+        "aws_region": "us-east-2",
+        "profile_name": "default",
+        "project_name": "nbawp",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-flask-nba-wp",
+        "slim_handler": true,
+        "certificate_arn": "arn:aws:acm:us-east-1:294623768240:certificate/bc58cb3f-bfe3-4102-addd-7bccce0ba46b",
+        "domain": "nbawp.com"
+    }
+}

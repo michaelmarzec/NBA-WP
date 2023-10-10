@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+        var json_data = new google.visualization.DataTable({{ table|safe }}); 
+
+        table.draw(json_data, {showRowNumber: true, sortColumn:0, sortAscending: true, height: '100%'}); //width: '100%'
+      }
+    </script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
+    <meta charset="UTF-8">
+    <title>NBA-WP</title>
+</head>
+<body>
+    <header>
+        <p class="header"> NBA WP% Analysis</p>
+        <p class="sub-header"> Insight into the amount of time an NBA team spends winnning</p>
+    </header>
+    <div 
+    id="table_div">
+    </div>
+    <div class="glossary">
+        <h4><i>Glossary</i></h4>
+        <ul class="glossary_list"><b>Winning Time %:</b> Mean age per team</ul>
+        <ul class="glossary_list"><b>Losing Time %:</b> Mean age weighted by minutes played per team</ul>
+        <ul class="glossary_list"><b>Tie Time %:</b> Mean age weighted by usage rate per team</ul>
+        <ul class="glossary_list"><b>Winning %:</b> Mean age of 'Point' position weighted by minutes played per team </ul>
+        <ul class="glossary_list"><b>Point Diff:</b> Mean age of 'Combo' position weighted by minutes played per team</ul>
+        <ul class="glossary_list"><b>Expected Wins:</b> Mean age of 'Wing' position weighted by minutes played per team</ul>
+        <ul class="glossary_list"><b>Expected WP%:</b> Mean age of 'Forward' position weighted by minutes played per team</ul>
+        <ul class="glossary_list"><b>Winning Time % vs Winning %:</b> Mean age of 'Big' position weighted by minutes played per team</ul>
+        <ul class="glossary_list"><b>Winning Time % vs Expected Winning %:</b> Mean age of 'Big' position weighted by minutes played per team</ul>
+    </div>
+</body>
+<footer class="footer">
+    <p>Last Updated: {{ context.update_date | safe }}</p>
+    <p>Author: Michael Marzec</p>
+    <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+    <p>Walkthrough: <a href="https://michaelmarzec.github.io">https://michaelmarzec.github.io</a></p>
+    <p>Github: <a href="https://github.com/michaelmarzec/NBA-WP">https://github.com/michaelmarzec/NBA-WP</a></p>
+    <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com</a><a> & </a><a href="https://www.basketball-reference.com/">https://www.basketball-reference.com</a></p>
+</footer>
+</html>
