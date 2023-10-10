@@ -27,7 +27,7 @@ def data_ingest(file_name='static/22_23_wp_final_results.csv'):
 	
 	return df
 
-def aws_ingest(filename='22_23_wp_final_results.csv'):
+def aws_ingest(filename='22_23_wp_final_results.csv'): 
 	aws_id = os.getenv("aws_id")
 	aws_secret = os.getenv("aws_secret")
 	client = boto3.client('s3', aws_access_key_id=aws_id, aws_secret_access_key=aws_secret)
