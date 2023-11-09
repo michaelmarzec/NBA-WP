@@ -38,6 +38,13 @@ def aws_ingest(filename='22_23_wp_final_results.csv'):
 	csv_string = body.read().decode('utf-8')
 
 	df = pd.read_csv(StringIO(csv_string))
+	df['WT'] = df['WT'] * 100
+	df['LT'] = df['LT'] * 100
+	df['TIE_PC'] = df['TIE_PC'] * 100
+	df['WP'] = df['WP'] * 100
+	df['EXPECTED_WP'] = df['EXPECTED_WP'] * 100
+	df['WT_v_WP'] = df['WT_v_WP'] * 100
+	df['WT_v_EXP_WP'] = df['WT_v_EXP_WP'] * 100
 
 	return df
 
@@ -88,7 +95,7 @@ def main(filename='22_23_wp_final_results.csv'):
 ## Main Execution ##
 @app.route('/', methods=['GET','POST'])
 def index():
-	df = main()
+	df = main('nba_wt_results_agg.csv')
 	# sort = request.args.get('sort', 'Team_Name')
 	# reverse = (request.args.get('direction', 'asc') == 'desc')
 	# df = df.sort_values(by=[sort], ascending=reverse)
@@ -97,12 +104,12 @@ def index():
 						"WT": ("number", "Winning Time %"),
 						"LT": ("number", "Losing Time %"),
 						"TIE_PC": ("number", "Tie Time %"),
-						"WP": ("number", "Winning %"),
+						"WP": ("number", "Win %"),
 						"PT_DIFF": ("number", "Point Diff"),
 						"EXPECTED_WIN": ("number", "Expected Wins"),
-						"EXPECTED_WP": ("number", "Expected WP%"),
-						"WT_v_WP": ("number", "WT% vs WP%"),
-						"WT_v_EXP_WP": ("number", "WT% vs Expected WP%")
+						"EXPECTED_WP": ("number", "Expected Win %"),
+						"WT_v_WP": ("number", "Win Time % vs Win %"),
+						"WT_v_EXP_WP": ("number", "Win Time % vs Expected Win %")
 						}
 	
 	data_table = gviz_api.DataTable(table_description)
@@ -117,6 +124,44 @@ def index():
 
 	return render_template('wp_table.html',  table=json_table, context=context)
 
+# @app.route('/wt_scatter_plot', methods=['GET','POST'])
+# def scatter_plot():
+# 	df = main()
+
+# 	df = df[['TEAM','WT','WP']]
+
+# 	return render_template("wt_scatter_plot.html")
+
+@app.route('/22_23', methods=['GET','POST'])
+def index_22_23():
+	df = main('22_23_wp_final_results.csv')
+	# sort = request.args.get('sort', 'Team_Name')
+	# reverse = (request.args.get('direction', 'asc') == 'desc')
+	# df = df.sort_values(by=[sort], ascending=reverse)
+
+	table_description = {"TEAM": ("string", "Team Name"),
+						"WT": ("number", "Winning Time %"),
+						"LT": ("number", "Losing Time %"),
+						"TIE_PC": ("number", "Tie Time %"),
+						"WP": ("number", "Win %"),
+						"PT_DIFF": ("number", "Point Diff"),
+						"EXPECTED_WIN": ("number", "Expected Wins"),
+						"EXPECTED_WP": ("number", "Expected Win %"),
+						"WT_v_WP": ("number", "Win Time % vs Win %"),
+						"WT_v_EXP_WP": ("number", "Win Time % vs Expected Win %")
+						}
+	
+	data_table = gviz_api.DataTable(table_description)
+	table_data = df.to_dict(orient='records')	
+	data_table.LoadData(table_data)
+	json_table = data_table.ToJSon(columns_order=("TEAM",'WT','LT', 'TIE_PC',"WP","PT_DIFF","EXPECTED_WIN","EXPECTED_WP","WT_v_WP","WT_v_EXP_WP"))
+
+	today = date.today()
+	update_date = today.strftime("%m/%d/%Y")
+
+	context = {"update_date": update_date}
+
+	return render_template('wp_table_2223.html',  table=json_table, context=context)
 
 if __name__ == "__main__":
 	app.run(debug=True)

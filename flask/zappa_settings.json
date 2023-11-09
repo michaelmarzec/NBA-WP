@@ -2,7 +2,7 @@
     "dev": {
         "app_function": "app.app",
         "aws_region": "us-east-2",
-        "profile_name": "default",
+        // "profile_name": "default",
         "project_name": "nbawp",
         "runtime": "python3.9",
         "s3_bucket": "zappa-flask-nba-wp",

@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/scatter_plot.css') }}">
+    <meta charset="UTF-8">
+    <title>NBA-WP</title>
+</head>
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+<body>
+    <header>
+        <p class="header"> NBA WP% Analysis</p>
+        <p class="sub-header"> Insight into the amount of time an NBA team spends winnning</p>
+    </header>
+    <div class="redirect">
+        <a href="{{url_for('index')}}">WP Table</a>&emsp;&emsp;<a href="{{url_for('scatter_plot')}}">Win Time % vs Win % Plot</a>
+        <br></br>
+</div>
+</body>
+
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+        Scatter charts are often used to visualize the relationships
+        between data in two dimensions. This chart is visualizing
+        olympic contestants by sport, showing how various sports prefer different
+        characteristics.
+    </p>
+</figure>
+
+<div class="footer">
+    <p>Author: Michael Marzec</p>
+    <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+    <p>Infrastructure: <a href="https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure">https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure/</a></p>
+    <p>Github: <a href="https://github.com/michaelmarzec/NBA-Age-Analysis/">https://github.com/michaelmarzec/NBA-Age-Analysis/</a></p>
+    <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com/</a></p>
+</div>
+</div>
+</html>

@@ -35,16 +35,16 @@
     <header>
         <p class="header"> NBA WP% Analysis</p>
         <p class="sub-header"> Insight into the amount of time an NBA team spends winnning</p>
-    </header>
-    <!-- <br></br> -->
+        <!-- <br></br> -->
         <div class ="year_select_nav">
         <label>Season</label>
         <select name="season_select" onchange="location = this.value;">
             <option value="{{url_for('index')}}">2023-24</option>
-            <option value="{{url_for('index_22_23')}}">2022-23</option>
+            <option selected="selected" value="{{url_for('index_22_23')}}">2022-23</option>
         </select>
         </div>
-    <br></br>
+        <br></br>
+    </header>
     <div 
     id="table_div">
     </div>
