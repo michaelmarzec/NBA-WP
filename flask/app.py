@@ -104,6 +104,9 @@ def index():
 						"WT": ("number", "Winning Time %"),
 						"LT": ("number", "Losing Time %"),
 						"TIE_PC": ("number", "Tie Time %"),
+						"Wins": ("number", "Wins"),
+						"Losses": ("number", "Losses"),
+						"TIE_PC": ("number", "Tie Time %"),
 						"WP": ("number", "Win %"),
 						"PT_DIFF": ("number", "Point Diff"),
 						"EXPECTED_WIN": ("number", "Expected Wins"),
@@ -115,7 +118,7 @@ def index():
 	data_table = gviz_api.DataTable(table_description)
 	table_data = df.to_dict(orient='records')	
 	data_table.LoadData(table_data)
-	json_table = data_table.ToJSon(columns_order=("TEAM",'WT','LT', 'TIE_PC',"WP","PT_DIFF","EXPECTED_WIN","EXPECTED_WP","WT_v_WP","WT_v_EXP_WP"))
+	json_table = data_table.ToJSon(columns_order=("TEAM","WT","LT","TIE_PC","Wins","Losses","WP","PT_DIFF","EXPECTED_WIN","EXPECTED_WP","WT_v_WP","WT_v_EXP_WP"))
 
 	today = date.today()
 	update_date = today.strftime("%m/%d/%Y")
@@ -143,6 +146,9 @@ def index_22_23():
 						"WT": ("number", "Winning Time %"),
 						"LT": ("number", "Losing Time %"),
 						"TIE_PC": ("number", "Tie Time %"),
+						"Wins": ("number", "Wins"),
+						"Losses": ("number", "Losses"),
+						"TIE_PC": ("number", "Tie Time %"),
 						"WP": ("number", "Win %"),
 						"PT_DIFF": ("number", "Point Diff"),
 						"EXPECTED_WIN": ("number", "Expected Wins"),
@@ -154,7 +160,7 @@ def index_22_23():
 	data_table = gviz_api.DataTable(table_description)
 	table_data = df.to_dict(orient='records')	
 	data_table.LoadData(table_data)
-	json_table = data_table.ToJSon(columns_order=("TEAM",'WT','LT', 'TIE_PC',"WP","PT_DIFF","EXPECTED_WIN","EXPECTED_WP","WT_v_WP","WT_v_EXP_WP"))
+	json_table = data_table.ToJSon(columns_order=("TEAM","WT","LT", "TIE_PC","Wins","Losses","WP","PT_DIFF","EXPECTED_WIN","EXPECTED_WP","WT_v_WP","WT_v_EXP_WP"))
 
 	today = date.today()
 	update_date = today.strftime("%m/%d/%Y")

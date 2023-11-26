@@ -17,257 +17,257 @@ import json
 
 # Data Prep #
 def get_game_suffix(date, team1, team2):
-    # r = get(f'https://www.basketball-reference.com/boxscores/index.fcgi?year={date.year}&month={date.month}&day={date.day}')
-    # suffix = None
-    # if r.status_code==200:
-    #     soup = BeautifulSoup(r.content, 'html.parser')
-    #     for table in soup.find_all('table', attrs={'class': 'teams'}):
-    #         for anchor in table.find_all('a'):
-    #             if 'boxscores' in anchor.attrs['href']:
-    #                 if team1 in anchor.attrs['href'] or team2 in anchor.attrs['href']:
-    #                     suffix = anchor.attrs['href']
-    # return suffix
-    http = urllib3.PoolManager()
-    r = http.request("GET", f'https://www.basketball-reference.com/boxscores/index.fcgi?year={date.year}&month={date.month}&day={date.day}')
-    suffix = None
-    if r.status==200:
-        soup = BeautifulSoup(r.data, 'html.parser')
-        for table in soup.find_all('table', attrs={'class': 'teams'}):
-            for anchor in table.find_all('a'):
-                if 'boxscores' in anchor.attrs['href']:
-                    if team1 in anchor.attrs['href'] or team2 in anchor.attrs['href']:
-                        suffix = anchor.attrs['href']
-    return suffix
+	# r = get(f'https://www.basketball-reference.com/boxscores/index.fcgi?year={date.year}&month={date.month}&day={date.day}')
+	# suffix = None
+	# if r.status_code==200:
+	#     soup = BeautifulSoup(r.content, 'html.parser')
+	#     for table in soup.find_all('table', attrs={'class': 'teams'}):
+	#         for anchor in table.find_all('a'):
+	#             if 'boxscores' in anchor.attrs['href']:
+	#                 if team1 in anchor.attrs['href'] or team2 in anchor.attrs['href']:
+	#                     suffix = anchor.attrs['href']
+	# return suffix
+	http = urllib3.PoolManager()
+	r = http.request("GET", f'https://www.basketball-reference.com/boxscores/index.fcgi?year={date.year}&month={date.month}&day={date.day}')
+	suffix = None
+	if r.status==200:
+		soup = BeautifulSoup(r.data, 'html.parser')
+		for table in soup.find_all('table', attrs={'class': 'teams'}):
+			for anchor in table.find_all('a'):
+				if 'boxscores' in anchor.attrs['href']:
+					if team1 in anchor.attrs['href'] or team2 in anchor.attrs['href']:
+						suffix = anchor.attrs['href']
+	return suffix
 # Extract game log (modified version for updates to the basketball_reference_scraper library)
 def get_pbp_helper(suffix):
-    selector = f'#pbp'
-    # r = get(f'https://www.basketball-reference.com/boxscores/pbp{suffix}')
-    # if r.status_code==200:
-    #     soup = BeautifulSoup(r.content, 'html.parser')
-    #     table = soup.find('table', attrs={'id': 'pbp'})
-    #     return pd.read_html(str(table), flavor='bs4')[0]
-    http = urllib3.PoolManager()
-    r =  http.request("GET",f'https://www.basketball-reference.com/boxscores/pbp{suffix}')
-    if r.status==200:
-        soup = BeautifulSoup(r.data, 'html.parser')
-        table = soup.find('table', attrs={'id': 'pbp'})
-        return pd.read_html(str(table), flavor='lxml')[0]
+	selector = f'#pbp'
+	# r = get(f'https://www.basketball-reference.com/boxscores/pbp{suffix}')
+	# if r.status_code==200:
+	#     soup = BeautifulSoup(r.content, 'html.parser')
+	#     table = soup.find('table', attrs={'id': 'pbp'})
+	#     return pd.read_html(str(table), flavor='bs4')[0]
+	http = urllib3.PoolManager()
+	r =  http.request("GET",f'https://www.basketball-reference.com/boxscores/pbp{suffix}')
+	if r.status==200:
+		soup = BeautifulSoup(r.data, 'html.parser')
+		table = soup.find('table', attrs={'id': 'pbp'})
+		return pd.read_html(str(table), flavor='lxml')[0]
 
 def format_df(df1):
-    df1.columns = list(map(lambda x: x[1], list(df1.columns)))
-    t1 = list(df1.columns)[1].upper()
-    t2 = list(df1.columns)[5].upper()
-    q = 1
-    df = None
-    for index, row in df1.iterrows():
-        d = {'QUARTER': float('nan'), 'TIME_REMAINING': float('nan'), f'{t1}_ACTION': float('nan'), f'{t2}_ACTION': float('nan'), f'{t1}_SCORE': float('nan'), f'{t2}_SCORE': float('nan')}
-        if row['Time']=='2nd Q':
-            q = 2
-        elif row['Time']=='3rd Q':
-            q = 3
-        elif row['Time']=='4th Q':
-            q = 4
-        elif 'OT' in row['Time']:
-            q = row['Time'][0]+'OT'
-        try:
-            d['QUARTER'] = q
-            d['TIME_REMAINING'] = row['Time']
-            scores = row['Score'].split('-')
-            d[f'{t1}_SCORE'] = int(scores[0])
-            d[f'{t2}_SCORE'] = int(scores[1])
-            d[f'{t1}_ACTION'] = row[list(df1.columns)[1]]
-            d[f'{t2}_ACTION'] = row[list(df1.columns)[5]]
-            if df is None:
-                df = pd.DataFrame(columns = list(d.keys()))
-            df = pd.concat([df, pd.DataFrame(d, index=[0])], ignore_index=True)#df.append(d, ignore_index=True)
-        except:
-            continue
-    return df
+	df1.columns = list(map(lambda x: x[1], list(df1.columns)))
+	t1 = list(df1.columns)[1].upper()
+	t2 = list(df1.columns)[5].upper()
+	q = 1
+	df = None
+	for index, row in df1.iterrows():
+		d = {'QUARTER': float('nan'), 'TIME_REMAINING': float('nan'), f'{t1}_ACTION': float('nan'), f'{t2}_ACTION': float('nan'), f'{t1}_SCORE': float('nan'), f'{t2}_SCORE': float('nan')}
+		if row['Time']=='2nd Q':
+			q = 2
+		elif row['Time']=='3rd Q':
+			q = 3
+		elif row['Time']=='4th Q':
+			q = 4
+		elif 'OT' in row['Time']:
+			q = row['Time'][0]+'OT'
+		try:
+			d['QUARTER'] = q
+			d['TIME_REMAINING'] = row['Time']
+			scores = row['Score'].split('-')
+			d[f'{t1}_SCORE'] = int(scores[0])
+			d[f'{t2}_SCORE'] = int(scores[1])
+			d[f'{t1}_ACTION'] = row[list(df1.columns)[1]]
+			d[f'{t2}_ACTION'] = row[list(df1.columns)[5]]
+			if df is None:
+				df = pd.DataFrame(columns = list(d.keys()))
+			df = pd.concat([df, pd.DataFrame(d, index=[0])], ignore_index=True)#df.append(d, ignore_index=True)
+		except:
+			continue
+	return df
 
 def get_pbp(date, team1, team2):
-    date = pd.to_datetime(date)
-    suffix = get_game_suffix(date, team1, team2).replace('/boxscores', '')
-    df = get_pbp_helper(suffix)
-    df = df.iloc[1:].reset_index(drop=True)
-    df = format_df(df)
-    return df
+	date = pd.to_datetime(date)
+	suffix = get_game_suffix(date, team1, team2).replace('/boxscores', '')
+	df = get_pbp_helper(suffix)
+	df = df.iloc[1:].reset_index(drop=True)
+	df = format_df(df)
+	return df
 
 # calculate winning time %
 def calculate_game_wp(pbp_df, date, away_team, home_team):
-    pbp_df = pbp_df.rename(columns={
-        pbp_df.columns[4]:"AWAY_SCORE",
-        pbp_df.columns[5]:"HOME_SCORE"
-    })
+	pbp_df = pbp_df.rename(columns={
+		pbp_df.columns[4]:"AWAY_SCORE",
+		pbp_df.columns[5]:"HOME_SCORE"
+	})
 
-    pbp_df = pbp_df[['QUARTER','TIME_REMAINING','AWAY_SCORE','HOME_SCORE']]
-    pbp_df['TIME_REMAINING'] = pbp_df.TIME_REMAINING.replace('24:00.0','12:00.0')
-    pbp_df['TIME_REMAINING'] = pd.to_datetime(pbp_df['TIME_REMAINING'])
-    pbp_df['TIME_REMAINING'] = pd.to_datetime(pbp_df['TIME_REMAINING'],format= '%H:%M:%S').dt.time
-    pbp_df['AWAY_SCORE'] = pbp_df['AWAY_SCORE'].astype(int)
-    pbp_df['HOME_SCORE'] = pbp_df['HOME_SCORE'].astype(int)
+	pbp_df = pbp_df[['QUARTER','TIME_REMAINING','AWAY_SCORE','HOME_SCORE']]
+	pbp_df['TIME_REMAINING'] = pbp_df.TIME_REMAINING.replace('24:00.0','12:00.0')
+	pbp_df['TIME_REMAINING'] = pd.to_datetime(pbp_df['TIME_REMAINING'])
+	pbp_df['TIME_REMAINING'] = pd.to_datetime(pbp_df['TIME_REMAINING'],format= '%H:%M:%S').dt.time
+	pbp_df['AWAY_SCORE'] = pbp_df['AWAY_SCORE'].astype(int)
+	pbp_df['HOME_SCORE'] = pbp_df['HOME_SCORE'].astype(int)
 
-    quarter_beginning = '12:00:00'
-    quarter_ending = '00:00:00'
-    overtime_beginning = '05:00:00'
+	quarter_beginning = '12:00:00'
+	quarter_ending = '00:00:00'
+	overtime_beginning = '05:00:00'
 
-    list_of_quarters = list(pbp_df['QUARTER'].unique())
+	list_of_quarters = list(pbp_df['QUARTER'].unique())
 
-    full_df = pd.DataFrame()
-    for quarter in list_of_quarters:
-        quarter_df = pbp_df[pbp_df['QUARTER'] == quarter]
+	full_df = pd.DataFrame()
+	for quarter in list_of_quarters:
+		quarter_df = pbp_df[pbp_df['QUARTER'] == quarter]
 
-        if quarter == 1:# add beginning of 1st quarter
-            quarter_df.loc[-1] = [1, quarter_beginning, 0, 0] 
-            quarter_df.index = quarter_df.index + 1  
-            quarter_df = quarter_df.sort_index()
+		if quarter == 1:# add beginning of 1st quarter
+			quarter_df.loc[-1] = [1, quarter_beginning, 0, 0] 
+			quarter_df.index = quarter_df.index + 1  
+			quarter_df = quarter_df.sort_index()
 
-            end_row = {
-                'QUARTER': [quarter],
-                'TIME_REMAINING': quarter_ending,
-                'AWAY_SCORE': [quarter_df.iloc[-1,2]],
-                'HOME_SCORE': [quarter_df.iloc[-1,3]]
-            }
+			end_row = {
+				'QUARTER': [quarter],
+				'TIME_REMAINING': quarter_ending,
+				'AWAY_SCORE': [quarter_df.iloc[-1,2]],
+				'HOME_SCORE': [quarter_df.iloc[-1,3]]
+			}
 
-            end_row = pd.DataFrame(data=end_row)
-            quarter_df = pd.concat([quarter_df, end_row], axis=0).reset_index(drop=True)
+			end_row = pd.DataFrame(data=end_row)
+			quarter_df = pd.concat([quarter_df, end_row], axis=0).reset_index(drop=True)
 
-            temp_date = str(datetime.datetime.strptime('1900-01-01', '%Y-%m-%d').date())
-            quarter_df['TIME_REMAINING'] = pd.to_datetime(temp_date + " " + quarter_df.TIME_REMAINING.astype(str))
-            quarter_df['TIME_ELAPSED'] = (quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))
-            quarter_df['INDICATOR'] = np.where(
-                quarter_df['QUARTER'] == quarter_df['QUARTER'].shift(-1),
-                ((quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))/60000000000).view(int),
-                0
-            )
+			temp_date = str(datetime.datetime.strptime('1900-01-01', '%Y-%m-%d').date())
+			quarter_df['TIME_REMAINING'] = pd.to_datetime(temp_date + " " + quarter_df.TIME_REMAINING.astype(str))
+			quarter_df['TIME_ELAPSED'] = (quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))
+			quarter_df['INDICATOR'] = np.where(
+				quarter_df['QUARTER'] == quarter_df['QUARTER'].shift(-1),
+				((quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))/60000000000).view(int),
+				0
+			)
 
-            full_df = pd.concat([full_df, quarter_df], axis=0)
+			full_df = pd.concat([full_df, quarter_df], axis=0)
 
 
-        elif quarter in (2,3,4):
-            start_row = end_row
-            start_row['QUARTER'] = quarter
-            start_row['TIME_REMAINING'] = quarter_beginning
+		elif quarter in (2,3,4):
+			start_row = end_row
+			start_row['QUARTER'] = quarter
+			start_row['TIME_REMAINING'] = quarter_beginning
 
-            quarter_df = quarter_df.reset_index(drop=True)
-            quarter_df.index += 1
+			quarter_df = quarter_df.reset_index(drop=True)
+			quarter_df.index += 1
 
-            quarter_df = pd.concat([start_row, quarter_df],axis=0)
-            quarter_df = quarter_df.sort_index()
+			quarter_df = pd.concat([start_row, quarter_df],axis=0)
+			quarter_df = quarter_df.sort_index()
 
-            end_row = {
-                'QUARTER': [quarter],
-                'TIME_REMAINING': quarter_ending,
-                'AWAY_SCORE': [quarter_df.iloc[-1,2]],
-                'HOME_SCORE': [quarter_df.iloc[-1,3]]
-            }
+			end_row = {
+				'QUARTER': [quarter],
+				'TIME_REMAINING': quarter_ending,
+				'AWAY_SCORE': [quarter_df.iloc[-1,2]],
+				'HOME_SCORE': [quarter_df.iloc[-1,3]]
+			}
 
-            end_row = pd.DataFrame(data=end_row)
-            quarter_df = pd.concat([quarter_df, end_row], axis=0).reset_index(drop=True)
+			end_row = pd.DataFrame(data=end_row)
+			quarter_df = pd.concat([quarter_df, end_row], axis=0).reset_index(drop=True)
 
-            temp_date = str(datetime.datetime.strptime('1900-01-01', '%Y-%m-%d').date())
-            quarter_df['TIME_REMAINING'] = pd.to_datetime(temp_date + " " + quarter_df.TIME_REMAINING.astype(str))
-            quarter_df['TIME_ELAPSED'] = (quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))
-            quarter_df['INDICATOR'] = np.where(
-                quarter_df['QUARTER'] == quarter_df['QUARTER'].shift(-1),
-                ((quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))/60000000000).view(int),
-                0
-            )
+			temp_date = str(datetime.datetime.strptime('1900-01-01', '%Y-%m-%d').date())
+			quarter_df['TIME_REMAINING'] = pd.to_datetime(temp_date + " " + quarter_df.TIME_REMAINING.astype(str))
+			quarter_df['TIME_ELAPSED'] = (quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))
+			quarter_df['INDICATOR'] = np.where(
+				quarter_df['QUARTER'] == quarter_df['QUARTER'].shift(-1),
+				((quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))/60000000000).view(int),
+				0
+			)
 
-            full_df = pd.concat([full_df, quarter_df], axis=0)
+			full_df = pd.concat([full_df, quarter_df], axis=0)
 
-        else:
-            start_row = end_row
-            start_row['QUARTER'] = quarter
-            start_row['TIME_REMAINING'] = overtime_beginning
+		else:
+			start_row = end_row
+			start_row['QUARTER'] = quarter
+			start_row['TIME_REMAINING'] = overtime_beginning
 
-            quarter_df = quarter_df.reset_index(drop=True)
-            quarter_df.index += 1
+			quarter_df = quarter_df.reset_index(drop=True)
+			quarter_df.index += 1
 
-            quarter_df = pd.concat([start_row, quarter_df],axis=0)
-            quarter_df = quarter_df.sort_index()
+			quarter_df = pd.concat([start_row, quarter_df],axis=0)
+			quarter_df = quarter_df.sort_index()
 
-            end_row = {
-                'QUARTER': [quarter],
-                'TIME_REMAINING': quarter_ending,
-                'AWAY_SCORE': [quarter_df.iloc[-1,2]],
-                'HOME_SCORE': [quarter_df.iloc[-1,3]]
-            }
+			end_row = {
+				'QUARTER': [quarter],
+				'TIME_REMAINING': quarter_ending,
+				'AWAY_SCORE': [quarter_df.iloc[-1,2]],
+				'HOME_SCORE': [quarter_df.iloc[-1,3]]
+			}
 
-            end_row = pd.DataFrame(data=end_row)
-            quarter_df = pd.concat([quarter_df, end_row], axis=0).reset_index(drop=True)
+			end_row = pd.DataFrame(data=end_row)
+			quarter_df = pd.concat([quarter_df, end_row], axis=0).reset_index(drop=True)
 
-            temp_date = str(datetime.datetime.strptime('1900-01-01', '%Y-%m-%d').date())
-            quarter_df['TIME_REMAINING'] = pd.to_datetime(temp_date + " " + quarter_df.TIME_REMAINING.astype(str))
-            quarter_df['TIME_ELAPSED'] = (quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))
-            quarter_df['INDICATOR'] = np.where(
-                quarter_df['QUARTER'] == quarter_df['QUARTER'].shift(-1),
-                ((quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))/60000000000).view(int),
-                0
-            )
+			temp_date = str(datetime.datetime.strptime('1900-01-01', '%Y-%m-%d').date())
+			quarter_df['TIME_REMAINING'] = pd.to_datetime(temp_date + " " + quarter_df.TIME_REMAINING.astype(str))
+			quarter_df['TIME_ELAPSED'] = (quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))
+			quarter_df['INDICATOR'] = np.where(
+				quarter_df['QUARTER'] == quarter_df['QUARTER'].shift(-1),
+				((quarter_df['TIME_REMAINING'] - quarter_df['TIME_REMAINING'].shift(-1))/60000000000).view(int),
+				0
+			)
 
-            full_df = pd.concat([full_df, quarter_df], axis=0)
+			full_df = pd.concat([full_df, quarter_df], axis=0)
 
-    full_df['LEADER'] = np.where(
-        full_df.HOME_SCORE > full_df.AWAY_SCORE,
-        'HOME_TEAM',
-        'AWAY_TEAM',
-    )
+	full_df['LEADER'] = np.where(
+		full_df.HOME_SCORE > full_df.AWAY_SCORE,
+		'HOME_TEAM',
+		'AWAY_TEAM',
+	)
 
-    full_df['LEADER'] = np.where(
-        full_df.HOME_SCORE == full_df.AWAY_SCORE,
-        'NEITHER',
-        full_df.LEADER
-    )
-    full_df_gb = full_df.groupby('LEADER')['INDICATOR'].sum().reset_index() 
+	full_df['LEADER'] = np.where(
+		full_df.HOME_SCORE == full_df.AWAY_SCORE,
+		'NEITHER',
+		full_df.LEADER
+	)
+	full_df_gb = full_df.groupby('LEADER')['INDICATOR'].sum().reset_index() 
 
-    teams = ['AWAY_TEAM','HOME_TEAM']
-    total_seconds = full_df_gb.INDICATOR.sum()
+	teams = ['AWAY_TEAM','HOME_TEAM']
+	total_seconds = full_df_gb.INDICATOR.sum()
 
-    results_row = pd.DataFrame(columns=['DATE','AWAY_TEAM','HOME_TEAM','AWAY_WT','HOME_WT'],index=[0])
-    results_row['DATE'] = date
-    results_row['AWAY_TEAM'] = away_team
-    results_row['HOME_TEAM'] = home_team
-    
-    try:
-        away_seconds_leading = full_df_gb[full_df_gb.LEADER == 'AWAY_TEAM'].INDICATOR.values[0]
-    except:
-        away_seconds_leading = 0
-    away_wp = away_seconds_leading / total_seconds
+	results_row = pd.DataFrame(columns=['DATE','AWAY_TEAM','HOME_TEAM','AWAY_WT','HOME_WT'],index=[0])
+	results_row['DATE'] = date
+	results_row['AWAY_TEAM'] = away_team
+	results_row['HOME_TEAM'] = home_team
+	
+	try:
+		away_seconds_leading = full_df_gb[full_df_gb.LEADER == 'AWAY_TEAM'].INDICATOR.values[0]
+	except:
+		away_seconds_leading = 0
+	away_wp = away_seconds_leading / total_seconds
 
-    try:
-        home_seconds_leading = full_df_gb[full_df_gb.LEADER == 'HOME_TEAM'].INDICATOR.values[0]
-    except:
-        home_seconds_leading = 0
-    home_wp = home_seconds_leading / total_seconds
-    
-    results_row['AWAY_WT'] = away_wp
-    results_row['HOME_WT'] = home_wp
+	try:
+		home_seconds_leading = full_df_gb[full_df_gb.LEADER == 'HOME_TEAM'].INDICATOR.values[0]
+	except:
+		home_seconds_leading = 0
+	home_wp = home_seconds_leading / total_seconds
+	
+	results_row['AWAY_WT'] = away_wp
+	results_row['HOME_WT'] = home_wp
 
-    return results_row
+	return results_row
 
-    
+	
 # function to calculate team average for each metric
 def calculate_tm_avg_metric(df, metric):
-    # set metric columns
-    if metric in ('WT','LT'):
-        away_col = 'AWAY_' + metric
-        home_col = 'HOME_' + metric
-    elif metric == 'TIE_PC':
-        away_col = metric
-        home_col = metric
-    
-    # reformat into single column
-    nba_results_22_23_away = df[['DATE','AWAY_TEAM', away_col]].rename(columns={'AWAY_TEAM':'TEAM',away_col:metric})
-    nba_results_22_23_home = df[['DATE','HOME_TEAM', home_col]].rename(columns={'HOME_TEAM':'TEAM',home_col:metric})
-        
-        
+	# set metric columns
+	if metric in ('WT','LT'):
+		away_col = 'AWAY_' + metric
+		home_col = 'HOME_' + metric
+	elif metric == 'TIE_PC':
+		away_col = metric
+		home_col = metric
+	
+	# reformat into single column
+	nba_results_22_23_away = df[['DATE','AWAY_TEAM', away_col]].rename(columns={'AWAY_TEAM':'TEAM',away_col:metric})
+	nba_results_22_23_home = df[['DATE','HOME_TEAM', home_col]].rename(columns={'HOME_TEAM':'TEAM',home_col:metric})
+		
+		
 
-    # concatenate
-    nba_results_22_23_reformat = pd.concat([nba_results_22_23_away, nba_results_22_23_home]).reset_index(drop=True)
-    
-    # find team averages
-    nba_results_22_23_agg = nba_results_22_23_reformat.groupby(['TEAM']).mean().reset_index()
-    return nba_results_22_23_agg
+	# concatenate
+	nba_results_22_23_reformat = pd.concat([nba_results_22_23_away, nba_results_22_23_home]).reset_index(drop=True)
+	
+	# find team averages
+	nba_results_22_23_agg = nba_results_22_23_reformat.groupby(['TEAM']).mean().reset_index()
+	return nba_results_22_23_agg
 
 
 
@@ -285,29 +285,29 @@ def main():
 	nba_schedule_df = pd.read_csv('wt_support/23_24_nba_schedule.csv')
 	nba_schedule_df['DATE'] = pd.to_datetime(nba_schedule_df['DATE'])
 
-	# nba_schedule_df_retro = nba_schedule_df[
-    # 	(nba_schedule_df.DATE>='2023-10-24') &
-    # 	(nba_schedule_df.DATE<datetime.date.today().strftime('%Y-%m-%d'))
-	# ].reset_index(drop=True)
+	nba_schedule_df_retro = nba_schedule_df[
+		(nba_schedule_df.DATE>='2023-11-24') &
+		(nba_schedule_df.DATE<='2023-11-24')
+	].reset_index(drop=True)
 
 	# reduce to yesterday's results
-	nba_schedule_df_retro = nba_schedule_df[
-    	nba_schedule_df.DATE == ((datetime.date.today() - datetime.timedelta(1)).strftime('%Y-%m-%d'))
-	].reset_index(drop=True)
+	# nba_schedule_df_retro = nba_schedule_df[
+	# 	nba_schedule_df.DATE == ((datetime.date.today() - datetime.timedelta(1)).strftime('%Y-%m-%d'))
+	# ].reset_index(drop=True)
 
 	nba_wt_results_yesterday = pd.DataFrame()
 
 	# extract new results
 	for game_number in range(len(nba_schedule_df_retro)):
-	    if (game_number % 9) == 0:
-	        sleep(120)
-	    date = nba_schedule_df_retro.loc[game_number, "DATE"]
-	    away_team = nba_schedule_df_retro.loc[game_number, "AWAY_TEAM"]
-	    home_team = nba_schedule_df_retro.loc[game_number, "HOME_TEAM"]
-	    pbp_df = get_pbp(date, away_team, home_team)
-	    # print(str(date) + '-' + str(game_number) + '-' + away_team + '-' + home_team)
-	    wp_results = calculate_game_wp(pbp_df, date, away_team, home_team)
-	    nba_wt_results_yesterday = pd.concat([nba_wt_results_yesterday, wp_results]).reset_index(drop=True)
+		if (game_number % 9) == 0:
+			sleep(120)
+		date = nba_schedule_df_retro.loc[game_number, "DATE"]
+		away_team = nba_schedule_df_retro.loc[game_number, "AWAY_TEAM"]
+		home_team = nba_schedule_df_retro.loc[game_number, "HOME_TEAM"]
+		pbp_df = get_pbp(date, away_team, home_team)
+		# print(str(date) + '-' + str(game_number) + '-' + away_team + '-' + home_team)
+		wp_results = calculate_game_wp(pbp_df, date, away_team, home_team)
+		nba_wt_results_yesterday = pd.concat([nba_wt_results_yesterday, wp_results]).reset_index(drop=True)
 	
 	# concat into one df
 	nba_wt_results_df = pd.concat([nba_wt_results_df, nba_wt_results_yesterday])
@@ -346,9 +346,10 @@ def main():
 	df_ctg = df_ctg.iloc[: , 1:]
 	df_ctg = df_ctg.iloc[: , :7]
 	df_ctg_1 = df_ctg['Team']
-	df_ctg_2 = df_ctg.iloc[: , 2]
+	df_ctg_2 = df_ctg.iloc[: , 2:5]
 	df_ctg_3 = df_ctg.iloc[: , 5:]
 	df_ctg = pd.concat([df_ctg_1, df_ctg_2, df_ctg_3], axis=1)
+
 
 	team_names = {
 		'full_name':[
@@ -426,7 +427,9 @@ def main():
 		'abbr_name':'TEAM',
 		'Win%':'WP',
 		'Exp W82':'EXPECTED_WIN',
-		'Point Diff':'PT_DIFF'
+		'Point Diff':'PT_DIFF',
+		'W':'Wins',
+		'L':'Losses'
 	})
 
 	df_ctg['WP'] = df_ctg['WP'].str.rstrip('%').astype('float') / 100.0

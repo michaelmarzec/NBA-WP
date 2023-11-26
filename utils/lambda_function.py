@@ -10,13 +10,13 @@ from bs4 import BeautifulSoup
 import datetime
 import numpy as np
 import pandas as pd
-import requests
 
 # from botocore.vendored import requests
 # import requests
 
 from time import sleep
 from urllib.request import urlopen
+import urllib3
 
 # try:
 #     from utils import get_game_suffix
@@ -26,26 +26,42 @@ from urllib.request import urlopen
 ## Functions ##
 
 # Data Prep #
-# Extract game log (modified version for updates to the basketball_reference_scraper library)
 def get_game_suffix(date, team1, team2):
-    r = requests.get(f'https://www.basketball-reference.com/boxscores/index.fcgi?year={date.year}&month={date.month}&day={date.day}')
+    # r = get(f'https://www.basketball-reference.com/boxscores/index.fcgi?year={date.year}&month={date.month}&day={date.day}')
+    # suffix = None
+    # if r.status_code==200:
+    #     soup = BeautifulSoup(r.content, 'html.parser')
+    #     for table in soup.find_all('table', attrs={'class': 'teams'}):
+    #         for anchor in table.find_all('a'):
+    #             if 'boxscores' in anchor.attrs['href']:
+    #                 if team1 in anchor.attrs['href'] or team2 in anchor.attrs['href']:
+    #                     suffix = anchor.attrs['href']
+    # return suffix
+    http = urllib3.PoolManager()
+    r = http.request("GET", f'https://www.basketball-reference.com/boxscores/index.fcgi?year={date.year}&month={date.month}&day={date.day}')
     suffix = None
-    if r.status_code==200:
-        soup = BeautifulSoup(r.content, 'html.parser')
+    if r.status==200:
+        soup = BeautifulSoup(r.data, 'html.parser')
         for table in soup.find_all('table', attrs={'class': 'teams'}):
             for anchor in table.find_all('a'):
                 if 'boxscores' in anchor.attrs['href']:
                     if team1 in anchor.attrs['href'] or team2 in anchor.attrs['href']:
                         suffix = anchor.attrs['href']
     return suffix
-    
+# Extract game log (modified version for updates to the basketball_reference_scraper library)
 def get_pbp_helper(suffix):
     selector = f'#pbp'
-    r = requests.get(f'https://www.basketball-reference.com/boxscores/pbp{suffix}')
-    if r.status_code==200:
-        soup = BeautifulSoup(r.content, 'html.parser')
+    # r = get(f'https://www.basketball-reference.com/boxscores/pbp{suffix}')
+    # if r.status_code==200:
+    #     soup = BeautifulSoup(r.content, 'html.parser')
+    #     table = soup.find('table', attrs={'id': 'pbp'})
+    #     return pd.read_html(str(table), flavor='lxml')[0]
+    http = urllib3.PoolManager()
+    r =  http.request("GET",f'https://www.basketball-reference.com/boxscores/pbp{suffix}')
+    if r.status==200:
+        soup = BeautifulSoup(r.data, 'html.parser')
         table = soup.find('table', attrs={'id': 'pbp'})
-        return pd.read_html(str(table), flavor="lxml")[0]
+        return pd.read_html(str(table), flavor='lxml')[0]
 
 def format_df(df1):
     df1.columns = list(map(lambda x: x[1], list(df1.columns)))
@@ -278,13 +294,13 @@ def main(wt_results_file, nba_schedule_file, output_file):
     #   (nba_schedule_df.DATE>='2023-10-24') &
     #   (nba_schedule_df.DATE<datetime.date.today().strftime('%Y-%m-%d'))
     # ].reset_index(drop=True)
+#   nba_schedule_df_retro = nba_schedule_df[
+#       nba_schedule_df.DATE == '2023-10-31'
+#   ].reset_index(drop=True)
 
     # reduce to yesterday's results
-#   nba_schedule_df_retro = nba_schedule_df[
-#       nba_schedule_df.DATE == ((datetime.date.today() - datetime.timedelta(1)).strftime('%Y-%m-%d'))
-#   ].reset_index(drop=True)
     nba_schedule_df_retro = nba_schedule_df[
-        nba_schedule_df.DATE == '2023-10-31'
+        nba_schedule_df.DATE == ((datetime.date.today() - datetime.timedelta(1)).strftime('%Y-%m-%d'))
     ].reset_index(drop=True)
 
     nba_wt_results_yesterday = pd.DataFrame()
@@ -304,7 +320,7 @@ def main(wt_results_file, nba_schedule_file, output_file):
     
     # concat into one df
     nba_wt_results_df = pd.concat([nba_wt_results_df, nba_wt_results_yesterday])
-    nba_wt_results_df.to_csv('wt_support/23_24_wt_results.csv', index=False)
+    nba_wt_results_df.to_csv('/tmp/23_24_wt_results.csv', index=False)
 
     # conduct aggregations
     # calculate 2022-23 LT% and TIE%
@@ -335,11 +351,13 @@ def main(wt_results_file, nba_schedule_file, output_file):
     soup = BeautifulSoup(html, 'html.parser')
     table = soup.find("table")
     df_ctg = pd.read_html(str(table), flavor="lxml")[0]
+    print(df_ctg)
     df_ctg.columns = df_ctg.columns.get_level_values(1)
     df_ctg = df_ctg.iloc[: , 1:]
     df_ctg = df_ctg.iloc[: , :7]
     df_ctg_1 = df_ctg['Team']
     df_ctg_2 = df_ctg.iloc[: , 2]
+    df_ctg_2 = df_ctg.iloc[: , 2:5]
     df_ctg_3 = df_ctg.iloc[: , 5:]
     df_ctg = pd.concat([df_ctg_1, df_ctg_2, df_ctg_3], axis=1)
 
@@ -441,6 +459,7 @@ def lambda_handler(event, context):
     main('/tmp/23_24_wt_results.csv', '/tmp/23_24_nba_schedule.csv', '/tmp/nba_wt_results_agg.csv')
 
     bucket.upload_file('/tmp/nba_wt_results_agg.csv', 'nba_wt_results_agg.csv')
+    bucket.upload_file('/tmp/23_24_wt_results.csv', '23_24_wt_results.csv')
     
     return {
         'message': 'CTG Download + Data Update = Success'

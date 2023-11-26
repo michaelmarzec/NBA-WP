@@ -17,10 +17,10 @@
         formatter.format(json_data, 1)
         formatter.format(json_data, 2)
         formatter.format(json_data, 3)
-        formatter.format(json_data, 4)
-        formatter.format(json_data, 7)
-        formatter.format(json_data, 8)
+        formatter.format(json_data, 6)
         formatter.format(json_data, 9)
+        formatter.format(json_data, 10)
+        formatter.format(json_data, 11)
 
         table.draw(json_data, {showRowNumber: true, sortColumn:0, sortAscending: true, height: '100%'}); //width: '100%'
     }
@@ -35,7 +35,6 @@
     <header>
         <p class="header"> NBA WP% Analysis</p>
         <p class="sub-header"> Insight into the amount of time an NBA team spends winnning</p>
-        <!-- <br></br> -->
         <div class ="year_select_nav">
         <label>Season</label>
         <select name="season_select" onchange="location = this.value;">
@@ -53,6 +52,8 @@
         <ul class="glossary_list"><b>Winning Time %:</b> Percent of game time spent leading the game. </ul>
         <ul class="glossary_list"><b>Losing Time %:</b> Percent of game time spent losing the game. </ul>
         <ul class="glossary_list"><b>Tie Time %:</b> Percent of game time spent with a tie game. </ul>
+        <ul class="glossary_list"><b>Wins:</b> Number of games won. </ul>
+        <ul class="glossary_list"><b>Losses:</b> Number of games lost. </ul>
         <ul class="glossary_list"><b>Win %:</b> Team's actual winning percentage (Games Won / Games Played). </ul>
         <ul class="glossary_list"><b>Point Diff:</b> Team's average point differential </ul>
         <ul class="glossary_list"><b>Expected Wins:</b> Team's expected number of wins based on point differential.</ul>
