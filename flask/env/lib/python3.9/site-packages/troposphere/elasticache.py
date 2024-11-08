@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -156,7 +156,7 @@ class GlobalReplicationGroup(AWSObject):
 
 class ParameterGroup(AWSObject):
     """
-    `ParameterGroup <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticache-parameter-group.html>`__
+    `ParameterGroup <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticache-parametergroup.html>`__
     """
 
     resource_type = "AWS::ElastiCache::ParameterGroup"
@@ -260,6 +260,78 @@ class SecurityGroupIngress(AWSObject):
         "CacheSecurityGroupName": (str, True),
         "EC2SecurityGroupName": (str, True),
         "EC2SecurityGroupOwnerId": (str, False),
+    }
+
+
+class DataStorage(AWSProperty):
+    """
+    `DataStorage <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticache-serverlesscache-datastorage.html>`__
+    """
+
+    props: PropsDictType = {
+        "Maximum": (integer, False),
+        "Minimum": (integer, False),
+        "Unit": (str, True),
+    }
+
+
+class ECPUPerSecond(AWSProperty):
+    """
+    `ECPUPerSecond <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticache-serverlesscache-ecpupersecond.html>`__
+    """
+
+    props: PropsDictType = {
+        "Maximum": (integer, False),
+        "Minimum": (integer, False),
+    }
+
+
+class CacheUsageLimits(AWSProperty):
+    """
+    `CacheUsageLimits <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticache-serverlesscache-cacheusagelimits.html>`__
+    """
+
+    props: PropsDictType = {
+        "DataStorage": (DataStorage, False),
+        "ECPUPerSecond": (ECPUPerSecond, False),
+    }
+
+
+class Endpoint(AWSProperty):
+    """
+    `Endpoint <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticache-serverlesscache-endpoint.html>`__
+    """
+
+    props: PropsDictType = {
+        "Address": (str, False),
+        "Port": (validate_network_port, False),
+    }
+
+
+class ServerlessCache(AWSObject):
+    """
+    `ServerlessCache <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticache-serverlesscache.html>`__
+    """
+
+    resource_type = "AWS::ElastiCache::ServerlessCache"
+
+    props: PropsDictType = {
+        "CacheUsageLimits": (CacheUsageLimits, False),
+        "DailySnapshotTime": (str, False),
+        "Description": (str, False),
+        "Endpoint": (Endpoint, False),
+        "Engine": (str, True),
+        "FinalSnapshotName": (str, False),
+        "KmsKeyId": (str, False),
+        "MajorEngineVersion": (str, False),
+        "ReaderEndpoint": (Endpoint, False),
+        "SecurityGroupIds": ([str], False),
+        "ServerlessCacheName": (str, True),
+        "SnapshotArnsToRestore": ([str], False),
+        "SnapshotRetentionLimit": (integer, False),
+        "SubnetIds": ([str], False),
+        "Tags": (Tags, False),
+        "UserGroupId": (str, False),
     }
 
 

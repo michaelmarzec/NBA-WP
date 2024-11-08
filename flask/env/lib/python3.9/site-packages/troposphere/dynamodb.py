@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -51,6 +51,16 @@ class Projection(AWSProperty):
     }
 
 
+class WriteOnDemandThroughputSettings(AWSProperty):
+    """
+    `WriteOnDemandThroughputSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-globaltable-writeondemandthroughputsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "MaxWriteRequestUnits": (integer, False),
+    }
+
+
 class TargetTrackingScalingPolicyConfiguration(AWSProperty):
     """
     `TargetTrackingScalingPolicyConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-globaltable-targettrackingscalingpolicyconfiguration.html>`__
@@ -99,6 +109,7 @@ class GlobalTableGlobalSecondaryIndex(AWSProperty):
         "IndexName": (str, True),
         "KeySchema": ([KeySchema], True),
         "Projection": (Projection, True),
+        "WriteOnDemandThroughputSettings": (WriteOnDemandThroughputSettings, False),
         "WriteProvisionedThroughputSettings": (
             WriteProvisionedThroughputSettings,
             False,
@@ -145,6 +156,7 @@ class KinesisStreamSpecification(AWSProperty):
     """
 
     props: PropsDictType = {
+        "ApproximateCreationDateTimePrecision": (str, False),
         "StreamArn": (str, True),
     }
 
@@ -156,6 +168,16 @@ class PointInTimeRecoverySpecification(AWSProperty):
 
     props: PropsDictType = {
         "PointInTimeRecoveryEnabled": (boolean, False),
+    }
+
+
+class ReadOnDemandThroughputSettings(AWSProperty):
+    """
+    `ReadOnDemandThroughputSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-globaltable-readondemandthroughputsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "MaxReadRequestUnits": (integer, False),
     }
 
 
@@ -178,6 +200,7 @@ class ReplicaGlobalSecondaryIndexSpecification(AWSProperty):
     props: PropsDictType = {
         "ContributorInsightsSpecification": (ContributorInsightsSpecification, False),
         "IndexName": (str, True),
+        "ReadOnDemandThroughputSettings": (ReadOnDemandThroughputSettings, False),
         "ReadProvisionedThroughputSettings": (ReadProvisionedThroughputSettings, False),
     }
 
@@ -192,6 +215,26 @@ class ReplicaSSESpecification(AWSProperty):
     }
 
 
+class ResourcePolicy(AWSProperty):
+    """
+    `ResourcePolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-table-resourcepolicy.html>`__
+    """
+
+    props: PropsDictType = {
+        "PolicyDocument": (dict, True),
+    }
+
+
+class ReplicaStreamSpecification(AWSProperty):
+    """
+    `ReplicaStreamSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-globaltable-replicastreamspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "ResourcePolicy": (ResourcePolicy, True),
+    }
+
+
 class ReplicaSpecification(AWSProperty):
     """
     `ReplicaSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-globaltable-replicaspecification.html>`__
@@ -203,8 +246,11 @@ class ReplicaSpecification(AWSProperty):
         "GlobalSecondaryIndexes": ([ReplicaGlobalSecondaryIndexSpecification], False),
         "KinesisStreamSpecification": (KinesisStreamSpecification, False),
         "PointInTimeRecoverySpecification": (PointInTimeRecoverySpecification, False),
+        "ReadOnDemandThroughputSettings": (ReadOnDemandThroughputSettings, False),
         "ReadProvisionedThroughputSettings": (ReadProvisionedThroughputSettings, False),
         "Region": (str, True),
+        "ReplicaStreamSpecification": (ReplicaStreamSpecification, False),
+        "ResourcePolicy": (ResourcePolicy, False),
         "SSESpecification": (ReplicaSSESpecification, False),
         "TableClass": (str, False),
         "Tags": (Tags, False),
@@ -217,6 +263,7 @@ class StreamSpecification(AWSProperty):
     """
 
     props: PropsDictType = {
+        "ResourcePolicy": (ResourcePolicy, False),
         "StreamViewType": (str, True),
     }
 
@@ -250,10 +297,22 @@ class GlobalTable(AWSObject):
         "StreamSpecification": (StreamSpecification, False),
         "TableName": (str, False),
         "TimeToLiveSpecification": (TimeToLiveSpecification, False),
+        "WriteOnDemandThroughputSettings": (WriteOnDemandThroughputSettings, False),
         "WriteProvisionedThroughputSettings": (
             WriteProvisionedThroughputSettings,
             False,
         ),
+    }
+
+
+class OnDemandThroughput(AWSProperty):
+    """
+    `OnDemandThroughput <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-table-ondemandthroughput.html>`__
+    """
+
+    props: PropsDictType = {
+        "MaxReadRequestUnits": (integer, False),
+        "MaxWriteRequestUnits": (integer, False),
     }
 
 
@@ -277,6 +336,7 @@ class GlobalSecondaryIndex(AWSProperty):
         "ContributorInsightsSpecification": (ContributorInsightsSpecification, False),
         "IndexName": (str, True),
         "KeySchema": ([KeySchema], True),
+        "OnDemandThroughput": (OnDemandThroughput, False),
         "Projection": (Projection, True),
         "ProvisionedThroughput": (ProvisionedThroughput, False),
     }
@@ -357,8 +417,10 @@ class Table(AWSObject):
         "KeySchema": ([KeySchema], True),
         "KinesisStreamSpecification": (KinesisStreamSpecification, False),
         "LocalSecondaryIndexes": ([LocalSecondaryIndex], False),
+        "OnDemandThroughput": (OnDemandThroughput, False),
         "PointInTimeRecoverySpecification": (PointInTimeRecoverySpecification, False),
         "ProvisionedThroughput": (ProvisionedThroughput, False),
+        "ResourcePolicy": (ResourcePolicy, False),
         "SSESpecification": (SSESpecification, False),
         "StreamSpecification": (StreamSpecification, False),
         "TableClass": (table_class_validator, False),

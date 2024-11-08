@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -22,4 +22,39 @@ class Connection(AWSObject):
         "HostArn": (str, False),
         "ProviderType": (validate_connection_providertype, False),
         "Tags": (Tags, False),
+    }
+
+
+class RepositoryLink(AWSObject):
+    """
+    `RepositoryLink <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codestarconnections-repositorylink.html>`__
+    """
+
+    resource_type = "AWS::CodeStarConnections::RepositoryLink"
+
+    props: PropsDictType = {
+        "ConnectionArn": (str, True),
+        "EncryptionKeyArn": (str, False),
+        "OwnerId": (str, True),
+        "RepositoryName": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
+class SyncConfiguration(AWSObject):
+    """
+    `SyncConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codestarconnections-syncconfiguration.html>`__
+    """
+
+    resource_type = "AWS::CodeStarConnections::SyncConfiguration"
+
+    props: PropsDictType = {
+        "Branch": (str, True),
+        "ConfigFile": (str, True),
+        "PublishDeploymentStatus": (str, False),
+        "RepositoryLinkId": (str, True),
+        "ResourceName": (str, True),
+        "RoleArn": (str, True),
+        "SyncType": (str, True),
+        "TriggerResourceUpdateOn": (str, False),
     }

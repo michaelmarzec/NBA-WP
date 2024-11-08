@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -34,16 +34,6 @@ class Index(AWSObject):
     }
 
 
-class Filters(AWSProperty):
-    """
-    `Filters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resourceexplorer2-view-filters.html>`__
-    """
-
-    props: PropsDictType = {
-        "FilterString": (str, True),
-    }
-
-
 class IncludedProperty(AWSProperty):
     """
     `IncludedProperty <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resourceexplorer2-view-includedproperty.html>`__
@@ -51,6 +41,16 @@ class IncludedProperty(AWSProperty):
 
     props: PropsDictType = {
         "Name": (str, True),
+    }
+
+
+class SearchFilter(AWSProperty):
+    """
+    `SearchFilter <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resourceexplorer2-view-searchfilter.html>`__
+    """
+
+    props: PropsDictType = {
+        "FilterString": (str, True),
     }
 
 
@@ -62,8 +62,9 @@ class View(AWSObject):
     resource_type = "AWS::ResourceExplorer2::View"
 
     props: PropsDictType = {
-        "Filters": (Filters, False),
+        "Filters": (SearchFilter, False),
         "IncludedProperties": ([IncludedProperty], False),
+        "Scope": (str, False),
         "Tags": (dict, False),
         "ViewName": (str, True),
     }

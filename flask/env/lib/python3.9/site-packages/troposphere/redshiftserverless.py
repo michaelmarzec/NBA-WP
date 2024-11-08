@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -10,6 +10,18 @@ from . import AWSObject, AWSProperty, PropsDictType, Tags
 from .validators import boolean, integer
 
 
+class SnapshotCopyConfiguration(AWSProperty):
+    """
+    `SnapshotCopyConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-redshiftserverless-namespace-snapshotcopyconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "DestinationKmsKeyId": (str, False),
+        "DestinationRegion": (str, True),
+        "SnapshotRetentionPeriod": (integer, False),
+    }
+
+
 class Namespace(AWSObject):
     """
     `Namespace <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-redshiftserverless-namespace.html>`__
@@ -18,6 +30,7 @@ class Namespace(AWSObject):
     resource_type = "AWS::RedshiftServerless::Namespace"
 
     props: PropsDictType = {
+        "AdminPasswordSecretKmsKeyId": (str, False),
         "AdminUserPassword": (str, False),
         "AdminUsername": (str, False),
         "DbName": (str, False),
@@ -27,7 +40,11 @@ class Namespace(AWSObject):
         "IamRoles": ([str], False),
         "KmsKeyId": (str, False),
         "LogExports": ([str], False),
+        "ManageAdminPassword": (boolean, False),
         "NamespaceName": (str, True),
+        "NamespaceResourcePolicy": (dict, False),
+        "RedshiftIdcApplicationArn": (str, False),
+        "SnapshotCopyConfigurations": ([SnapshotCopyConfiguration], False),
         "Tags": (Tags, False),
     }
 
@@ -91,6 +108,7 @@ class WorkgroupProperty(AWSProperty):
         "CreationDate": (str, False),
         "Endpoint": (Endpoint, False),
         "EnhancedVpcRouting": (boolean, False),
+        "MaxCapacity": (integer, False),
         "NamespaceName": (str, False),
         "PubliclyAccessible": (boolean, False),
         "SecurityGroupIds": ([str], False),
@@ -113,6 +131,7 @@ class Workgroup(AWSObject):
         "BaseCapacity": (integer, False),
         "ConfigParameters": ([ConfigParameter], False),
         "EnhancedVpcRouting": (boolean, False),
+        "MaxCapacity": (integer, False),
         "NamespaceName": (str, False),
         "Port": (integer, False),
         "PubliclyAccessible": (boolean, False),
@@ -130,6 +149,8 @@ class NamespaceProperty(AWSProperty):
     """
 
     props: PropsDictType = {
+        "AdminPasswordSecretArn": (str, False),
+        "AdminPasswordSecretKmsKeyId": (str, False),
         "AdminUsername": (str, False),
         "CreationDate": (str, False),
         "DbName": (str, False),

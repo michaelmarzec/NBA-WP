@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -389,6 +389,7 @@ class PatchBaseline(AWSObject):
         "ApprovedPatches": ([str], False),
         "ApprovedPatchesComplianceLevel": (compliance_level, False),
         "ApprovedPatchesEnableNonSecurity": (boolean, False),
+        "DefaultBaseline": (boolean, False),
         "Description": (str, False),
         "GlobalFilters": (PatchFilterGroup, False),
         "Name": (str, True),

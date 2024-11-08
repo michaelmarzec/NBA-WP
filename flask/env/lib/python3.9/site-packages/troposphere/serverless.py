@@ -17,8 +17,10 @@ from .awslambda import (
     FileSystemConfig,
     FilterCriteria,
     ImageConfig,
+    LoggingConfig,
     ProvisionedConcurrencyConfiguration,
     RuntimeManagementConfig,
+    SnapStart,
     SourceAccessConfiguration,
     VPCConfig,
     validate_memory_size,
@@ -182,6 +184,7 @@ class Function(AWSObject):
         "InlineCode": (str, False),
         "KmsKeyArn": (str, False),
         "Layers": ([str], False),
+        "LoggingConfig": (LoggingConfig, False),
         "MemorySize": (validate_memory_size, False),
         "PackageType": (validate_package_type, False),
         "PermissionsBoundary": (str, False),
@@ -191,6 +194,7 @@ class Function(AWSObject):
         "Role": (str, False),
         "Runtime": (str, False),
         "RuntimeManagementConfig": (RuntimeManagementConfig, False),
+        "SnapStart": (SnapStart, False),
         "Tags": (dict, False),
         "Timeout": (positive_integer, False),
         "Tracing": (str, False),
@@ -571,6 +575,7 @@ class KinesisEvent(AWSObject):
         "BisectBatchOnFunctionError": (bool, False),
         "DestinationConfig": (DestinationConfig, False),
         "Enabled": (bool, False),
+        "FilterCriteria": (FilterCriteria, False),
         "MaximumBatchingWindowInSeconds": (positive_integer, False),
         "MaximumRecordAgeInSeconds": (integer_range(60, 604800), False),
         "MaximumRetryAttempts": (positive_integer, False),
@@ -769,7 +774,7 @@ class MQEvent(AWSObject):
         "MaximumBatchingWindowInSeconds": (integer, False),
         "Queues": ([str], True),
         "SecretsManagerKmsKeyId": (str, False),
-        "SourceAccessConfigurations": ([str], True),
+        "SourceAccessConfigurations": ([SourceAccessConfiguration], True),
     }
 
 

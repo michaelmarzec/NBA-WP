@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -134,4 +134,20 @@ class DBSubnetGroup(AWSObject):
         "DBSubnetGroupName": (str, False),
         "SubnetIds": ([str], True),
         "Tags": (Tags, False),
+    }
+
+
+class EventSubscription(AWSObject):
+    """
+    `EventSubscription <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-neptune-eventsubscription.html>`__
+    """
+
+    resource_type = "AWS::Neptune::EventSubscription"
+
+    props: PropsDictType = {
+        "Enabled": (boolean, False),
+        "EventCategories": ([str], False),
+        "SnsTopicArn": (str, False),
+        "SourceIds": ([str], False),
+        "SourceType": (str, False),
     }

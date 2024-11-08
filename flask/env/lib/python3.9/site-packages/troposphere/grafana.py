@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -7,7 +7,7 @@
 
 
 from . import AWSObject, AWSProperty, PropsDictType
-from .validators import double
+from .validators import boolean, double
 
 
 class NetworkAccessControl(AWSProperty):
@@ -103,6 +103,7 @@ class Workspace(AWSObject):
         "OrganizationRoleName": (str, False),
         "OrganizationalUnits": ([str], False),
         "PermissionType": (str, True),
+        "PluginAdminEnabled": (boolean, False),
         "RoleArn": (str, False),
         "SamlConfiguration": (SamlConfiguration, False),
         "StackSetName": (str, False),

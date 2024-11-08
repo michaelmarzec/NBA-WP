@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -32,12 +32,40 @@ class Accelerator(AWSObject):
     }
 
 
+class Resource(AWSProperty):
+    """
+    `Resource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-globalaccelerator-crossaccountattachment-resource.html>`__
+    """
+
+    props: PropsDictType = {
+        "Cidr": (str, False),
+        "EndpointId": (str, False),
+        "Region": (str, False),
+    }
+
+
+class CrossAccountAttachment(AWSObject):
+    """
+    `CrossAccountAttachment <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-globalaccelerator-crossaccountattachment.html>`__
+    """
+
+    resource_type = "AWS::GlobalAccelerator::CrossAccountAttachment"
+
+    props: PropsDictType = {
+        "Name": (str, True),
+        "Principals": ([str], False),
+        "Resources": ([Resource], False),
+        "Tags": (Tags, False),
+    }
+
+
 class EndpointConfiguration(AWSProperty):
     """
     `EndpointConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-globalaccelerator-endpointgroup-endpointconfiguration.html>`__
     """
 
     props: PropsDictType = {
+        "AttachmentArn": (str, False),
         "ClientIPPreservationEnabled": (boolean, False),
         "EndpointId": (str, True),
         "Weight": (integer, False),

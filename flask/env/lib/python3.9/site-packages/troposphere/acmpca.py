@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -45,7 +45,7 @@ class EdiPartyName(AWSProperty):
     """
 
     props: PropsDictType = {
-        "NameAssigner": (str, True),
+        "NameAssigner": (str, False),
         "PartyName": (str, True),
     }
 
@@ -250,14 +250,28 @@ class CsrExtensions(AWSProperty):
     }
 
 
+class CrlDistributionPointExtensionConfiguration(AWSProperty):
+    """
+    `CrlDistributionPointExtensionConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-acmpca-certificateauthority-crldistributionpointextensionconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "OmitExtension": (boolean, True),
+    }
+
+
 class CrlConfiguration(AWSProperty):
     """
     `CrlConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-acmpca-certificateauthority-crlconfiguration.html>`__
     """
 
     props: PropsDictType = {
+        "CrlDistributionPointExtensionConfiguration": (
+            CrlDistributionPointExtensionConfiguration,
+            False,
+        ),
         "CustomCname": (str, False),
-        "Enabled": (boolean, False),
+        "Enabled": (boolean, True),
         "ExpirationInDays": (integer, False),
         "S3BucketName": (str, False),
         "S3ObjectAcl": (str, False),
@@ -270,7 +284,7 @@ class OcspConfiguration(AWSProperty):
     """
 
     props: PropsDictType = {
-        "Enabled": (boolean, False),
+        "Enabled": (boolean, True),
         "OcspCustomCname": (str, False),
     }
 

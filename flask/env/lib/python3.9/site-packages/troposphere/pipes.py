@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -30,6 +30,53 @@ class PipeEnrichmentParameters(AWSProperty):
     props: PropsDictType = {
         "HttpParameters": (PipeEnrichmentHttpParameters, False),
         "InputTemplate": (str, False),
+    }
+
+
+class CloudwatchLogsLogDestination(AWSProperty):
+    """
+    `CloudwatchLogsLogDestination <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-cloudwatchlogslogdestination.html>`__
+    """
+
+    props: PropsDictType = {
+        "LogGroupArn": (str, False),
+    }
+
+
+class FirehoseLogDestination(AWSProperty):
+    """
+    `FirehoseLogDestination <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-firehoselogdestination.html>`__
+    """
+
+    props: PropsDictType = {
+        "DeliveryStreamArn": (str, False),
+    }
+
+
+class S3LogDestination(AWSProperty):
+    """
+    `S3LogDestination <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-s3logdestination.html>`__
+    """
+
+    props: PropsDictType = {
+        "BucketName": (str, False),
+        "BucketOwner": (str, False),
+        "OutputFormat": (str, False),
+        "Prefix": (str, False),
+    }
+
+
+class PipeLogConfiguration(AWSProperty):
+    """
+    `PipeLogConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-pipelogconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "CloudwatchLogsLogDestination": (CloudwatchLogsLogDestination, False),
+        "FirehoseLogDestination": (FirehoseLogDestination, False),
+        "IncludeExecutionData": ([str], False),
+        "Level": (str, False),
+        "S3LogDestination": (S3LogDestination, False),
     }
 
 
@@ -597,6 +644,70 @@ class PipeTargetStateMachineParameters(AWSProperty):
     }
 
 
+class DimensionMapping(AWSProperty):
+    """
+    `DimensionMapping <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-dimensionmapping.html>`__
+    """
+
+    props: PropsDictType = {
+        "DimensionName": (str, True),
+        "DimensionValue": (str, True),
+        "DimensionValueType": (str, True),
+    }
+
+
+class MultiMeasureAttributeMapping(AWSProperty):
+    """
+    `MultiMeasureAttributeMapping <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-multimeasureattributemapping.html>`__
+    """
+
+    props: PropsDictType = {
+        "MeasureValue": (str, True),
+        "MeasureValueType": (str, True),
+        "MultiMeasureAttributeName": (str, True),
+    }
+
+
+class MultiMeasureMapping(AWSProperty):
+    """
+    `MultiMeasureMapping <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-multimeasuremapping.html>`__
+    """
+
+    props: PropsDictType = {
+        "MultiMeasureAttributeMappings": ([MultiMeasureAttributeMapping], True),
+        "MultiMeasureName": (str, True),
+    }
+
+
+class SingleMeasureMapping(AWSProperty):
+    """
+    `SingleMeasureMapping <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-singlemeasuremapping.html>`__
+    """
+
+    props: PropsDictType = {
+        "MeasureName": (str, True),
+        "MeasureValue": (str, True),
+        "MeasureValueType": (str, True),
+    }
+
+
+class PipeTargetTimestreamParameters(AWSProperty):
+    """
+    `PipeTargetTimestreamParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-pipetargettimestreamparameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "DimensionMappings": ([DimensionMapping], True),
+        "EpochTimeUnit": (str, False),
+        "MultiMeasureMappings": ([MultiMeasureMapping], False),
+        "SingleMeasureMappings": ([SingleMeasureMapping], False),
+        "TimeFieldType": (str, False),
+        "TimeValue": (str, True),
+        "TimestampFormat": (str, False),
+        "VersionValue": (str, True),
+    }
+
+
 class PipeTargetParameters(AWSProperty):
     """
     `PipeTargetParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-pipes-pipe-pipetargetparameters.html>`__
@@ -618,6 +729,7 @@ class PipeTargetParameters(AWSProperty):
         "SageMakerPipelineParameters": (PipeTargetSageMakerPipelineParameters, False),
         "SqsQueueParameters": (PipeTargetSqsQueueParameters, False),
         "StepFunctionStateMachineParameters": (PipeTargetStateMachineParameters, False),
+        "TimestreamParameters": (PipeTargetTimestreamParameters, False),
     }
 
 
@@ -633,6 +745,8 @@ class Pipe(AWSObject):
         "DesiredState": (str, False),
         "Enrichment": (str, False),
         "EnrichmentParameters": (PipeEnrichmentParameters, False),
+        "KmsKeyIdentifier": (str, False),
+        "LogConfiguration": (PipeLogConfiguration, False),
         "Name": (str, False),
         "RoleArn": (str, True),
         "Source": (str, True),

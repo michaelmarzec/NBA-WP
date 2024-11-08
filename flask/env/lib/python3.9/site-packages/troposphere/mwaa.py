@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -58,11 +58,14 @@ class Environment(AWSObject):
         "AirflowConfigurationOptions": (dict, False),
         "AirflowVersion": (str, False),
         "DagS3Path": (str, False),
+        "EndpointManagement": (str, False),
         "EnvironmentClass": (str, False),
         "ExecutionRoleArn": (str, False),
         "KmsKey": (str, False),
         "LoggingConfiguration": (LoggingConfiguration, False),
+        "MaxWebservers": (integer, False),
         "MaxWorkers": (integer, False),
+        "MinWebservers": (integer, False),
         "MinWorkers": (integer, False),
         "Name": (str, True),
         "NetworkConfiguration": (NetworkConfiguration, False),

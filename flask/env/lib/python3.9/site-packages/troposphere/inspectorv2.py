@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -8,6 +8,89 @@
 
 from . import AWSObject, AWSProperty, PropsDictType
 from .validators import double, integer
+
+
+class CisTargets(AWSProperty):
+    """
+    `CisTargets <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-inspectorv2-cisscanconfiguration-cistargets.html>`__
+    """
+
+    props: PropsDictType = {
+        "AccountIds": ([str], True),
+        "TargetResourceTags": (dict, False),
+    }
+
+
+class Time(AWSProperty):
+    """
+    `Time <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-inspectorv2-cisscanconfiguration-time.html>`__
+    """
+
+    props: PropsDictType = {
+        "TimeOfDay": (str, True),
+        "TimeZone": (str, True),
+    }
+
+
+class DailySchedule(AWSProperty):
+    """
+    `DailySchedule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-inspectorv2-cisscanconfiguration-dailyschedule.html>`__
+    """
+
+    props: PropsDictType = {
+        "StartTime": (Time, True),
+    }
+
+
+class MonthlySchedule(AWSProperty):
+    """
+    `MonthlySchedule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-inspectorv2-cisscanconfiguration-monthlyschedule.html>`__
+    """
+
+    props: PropsDictType = {
+        "Day": (str, True),
+        "StartTime": (Time, True),
+    }
+
+
+class WeeklySchedule(AWSProperty):
+    """
+    `WeeklySchedule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-inspectorv2-cisscanconfiguration-weeklyschedule.html>`__
+    """
+
+    props: PropsDictType = {
+        "Days": ([str], True),
+        "StartTime": (Time, True),
+    }
+
+
+class Schedule(AWSProperty):
+    """
+    `Schedule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-inspectorv2-cisscanconfiguration-schedule.html>`__
+    """
+
+    props: PropsDictType = {
+        "Daily": (DailySchedule, False),
+        "Monthly": (MonthlySchedule, False),
+        "OneTime": (dict, False),
+        "Weekly": (WeeklySchedule, False),
+    }
+
+
+class CisScanConfiguration(AWSObject):
+    """
+    `CisScanConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-inspectorv2-cisscanconfiguration.html>`__
+    """
+
+    resource_type = "AWS::InspectorV2::CisScanConfiguration"
+
+    props: PropsDictType = {
+        "ScanName": (str, True),
+        "Schedule": (Schedule, True),
+        "SecurityLevel": (str, True),
+        "Tags": (dict, False),
+        "Targets": (CisTargets, True),
+    }
 
 
 class DateFilter(AWSProperty):

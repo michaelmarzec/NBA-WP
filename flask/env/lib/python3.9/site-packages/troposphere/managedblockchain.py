@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -19,6 +19,7 @@ class Accessor(AWSObject):
 
     props: PropsDictType = {
         "AccessorType": (str, True),
+        "NetworkType": (str, False),
         "Tags": (Tags, False),
     }
 

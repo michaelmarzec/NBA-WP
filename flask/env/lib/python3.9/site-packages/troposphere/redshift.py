@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -27,7 +27,9 @@ class LoggingProperties(AWSProperty):
     """
 
     props: PropsDictType = {
-        "BucketName": (str, True),
+        "BucketName": (str, False),
+        "LogDestinationType": (str, False),
+        "LogExports": ([str], False),
         "S3KeyPrefix": (str, False),
     }
 
@@ -69,9 +71,13 @@ class Cluster(AWSObject):
         "KmsKeyId": (str, False),
         "LoggingProperties": (LoggingProperties, False),
         "MaintenanceTrackName": (str, False),
+        "ManageMasterPassword": (boolean, False),
         "ManualSnapshotRetentionPeriod": (integer, False),
-        "MasterUserPassword": (str, True),
+        "MasterPasswordSecretKmsKeyId": (str, False),
+        "MasterUserPassword": (str, False),
         "MasterUsername": (str, True),
+        "MultiAZ": (boolean, False),
+        "NamespaceResourcePolicy": (dict, False),
         "NodeType": (str, True),
         "NumberOfNodes": (integer, False),
         "OwnerAccount": (str, False),

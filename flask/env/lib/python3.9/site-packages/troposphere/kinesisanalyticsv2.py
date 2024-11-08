@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -53,6 +53,16 @@ class ApplicationSnapshotConfiguration(AWSProperty):
 
     props: PropsDictType = {
         "SnapshotsEnabled": (boolean, True),
+    }
+
+
+class ApplicationSystemRollbackConfiguration(AWSProperty):
+    """
+    `ApplicationSystemRollbackConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-kinesisanalyticsv2-application-applicationsystemrollbackconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "RollbackEnabled": (boolean, True),
     }
 
 
@@ -376,6 +386,10 @@ class ApplicationConfiguration(AWSProperty):
     props: PropsDictType = {
         "ApplicationCodeConfiguration": (ApplicationCodeConfiguration, False),
         "ApplicationSnapshotConfiguration": (ApplicationSnapshotConfiguration, False),
+        "ApplicationSystemRollbackConfiguration": (
+            ApplicationSystemRollbackConfiguration,
+            False,
+        ),
         "EnvironmentProperties": (EnvironmentProperties, False),
         "FlinkApplicationConfiguration": (FlinkApplicationConfiguration, False),
         "SqlApplicationConfiguration": (SqlApplicationConfiguration, False),

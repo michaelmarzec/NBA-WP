@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -496,6 +496,7 @@ class EmailChannel(AWSObject):
         "Enabled": (boolean, False),
         "FromAddress": (str, True),
         "Identity": (str, True),
+        "OrchestrationSendingRoleArn": (str, False),
         "RoleArn": (str, False),
     }
 
@@ -540,9 +541,11 @@ class GCMChannel(AWSObject):
     resource_type = "AWS::Pinpoint::GCMChannel"
 
     props: PropsDictType = {
-        "ApiKey": (str, True),
+        "ApiKey": (str, False),
         "ApplicationId": (str, True),
+        "DefaultAuthenticationMethod": (str, False),
         "Enabled": (boolean, False),
+        "ServiceJson": (str, False),
     }
 
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -47,6 +47,7 @@ class Key(AWSObject):
         "MultiRegion": (boolean, False),
         "Origin": (str, False),
         "PendingWindowInDays": (validate_pending_window_in_days, False),
+        "RotationPeriodInDays": (integer, False),
         "Tags": (validate_tags_or_list, False),
     }
 

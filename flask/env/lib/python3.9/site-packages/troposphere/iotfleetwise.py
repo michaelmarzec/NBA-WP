@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -44,6 +44,17 @@ class CollectionScheme(AWSProperty):
     }
 
 
+class MqttTopicConfig(AWSProperty):
+    """
+    `MqttTopicConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iotfleetwise-campaign-mqtttopicconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ExecutionRoleArn": (str, True),
+        "MqttTopicArn": (str, True),
+    }
+
+
 class S3Config(AWSProperty):
     """
     `S3Config <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iotfleetwise-campaign-s3config.html>`__
@@ -74,8 +85,54 @@ class DataDestinationConfig(AWSProperty):
     """
 
     props: PropsDictType = {
+        "MqttTopicConfig": (MqttTopicConfig, False),
         "S3Config": (S3Config, False),
         "TimestreamConfig": (TimestreamConfig, False),
+    }
+
+
+class ConditionBasedSignalFetchConfig(AWSProperty):
+    """
+    `ConditionBasedSignalFetchConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iotfleetwise-campaign-conditionbasedsignalfetchconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ConditionExpression": (str, True),
+        "TriggerMode": (str, True),
+    }
+
+
+class TimeBasedSignalFetchConfig(AWSProperty):
+    """
+    `TimeBasedSignalFetchConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iotfleetwise-campaign-timebasedsignalfetchconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ExecutionFrequencyMs": (double, True),
+    }
+
+
+class SignalFetchConfig(AWSProperty):
+    """
+    `SignalFetchConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iotfleetwise-campaign-signalfetchconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ConditionBased": (ConditionBasedSignalFetchConfig, False),
+        "TimeBased": (TimeBasedSignalFetchConfig, False),
+    }
+
+
+class SignalFetchInformation(AWSProperty):
+    """
+    `SignalFetchInformation <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iotfleetwise-campaign-signalfetchinformation.html>`__
+    """
+
+    props: PropsDictType = {
+        "Actions": ([str], True),
+        "ConditionLanguageVersion": (double, False),
+        "FullyQualifiedName": (str, True),
+        "SignalFetchConfig": (SignalFetchConfig, True),
     }
 
 
@@ -99,7 +156,7 @@ class Campaign(AWSObject):
     resource_type = "AWS::IoTFleetWise::Campaign"
 
     props: PropsDictType = {
-        "Action": (str, True),
+        "Action": (str, False),
         "CollectionScheme": (CollectionScheme, True),
         "Compression": (str, False),
         "DataDestinationConfigs": ([DataDestinationConfig], False),
@@ -112,6 +169,7 @@ class Campaign(AWSObject):
         "Priority": (integer, False),
         "SignalCatalogArn": (str, True),
         "SignalsToCollect": ([SignalInformation], False),
+        "SignalsToFetch": ([SignalFetchInformation], False),
         "SpoolingMode": (str, False),
         "StartTime": (str, False),
         "Tags": (Tags, False),

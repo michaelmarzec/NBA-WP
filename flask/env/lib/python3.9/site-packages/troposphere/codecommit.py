@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -59,6 +59,7 @@ class Repository(AWSObject):
 
     props: PropsDictType = {
         "Code": (Code, False),
+        "KmsKeyId": (str, False),
         "RepositoryDescription": (str, False),
         "RepositoryName": (str, True),
         "Tags": (Tags, False),

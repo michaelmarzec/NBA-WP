@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -63,6 +63,16 @@ class AdvancedEventSelector(AWSProperty):
     }
 
 
+class InsightSelector(AWSProperty):
+    """
+    `InsightSelector <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudtrail-trail-insightselector.html>`__
+    """
+
+    props: PropsDictType = {
+        "InsightType": (str, False),
+    }
+
+
 class EventDataStore(AWSObject):
     """
     `EventDataStore <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudtrail-eventdatastore.html>`__
@@ -72,7 +82,12 @@ class EventDataStore(AWSObject):
 
     props: PropsDictType = {
         "AdvancedEventSelectors": ([AdvancedEventSelector], False),
+        "BillingMode": (str, False),
+        "FederationEnabled": (boolean, False),
+        "FederationRoleArn": (str, False),
         "IngestionEnabled": (boolean, False),
+        "InsightSelectors": ([InsightSelector], False),
+        "InsightsDestination": (str, False),
         "KmsKeyId": (str, False),
         "MultiRegionEnabled": (boolean, False),
         "Name": (str, False),
@@ -117,16 +132,6 @@ class EventSelector(AWSProperty):
         "ExcludeManagementEventSources": ([str], False),
         "IncludeManagementEvents": (boolean, False),
         "ReadWriteType": (str, False),
-    }
-
-
-class InsightSelector(AWSProperty):
-    """
-    `InsightSelector <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudtrail-trail-insightselector.html>`__
-    """
-
-    props: PropsDictType = {
-        "InsightType": (str, False),
     }
 
 

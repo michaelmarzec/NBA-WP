@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -14,6 +14,18 @@ from .validators.dlm import (
     validate_state,
     validate_tags_or_list,
 )
+
+
+class Exclusions(AWSProperty):
+    """
+    `Exclusions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dlm-lifecyclepolicy-exclusions.html>`__
+    """
+
+    props: PropsDictType = {
+        "ExcludeBootVolumes": (boolean, False),
+        "ExcludeTags": ([], False),
+        "ExcludeVolumeTypes": ([], False),
+    }
 
 
 class CrossRegionCopyRetainRule(AWSProperty):
@@ -128,6 +140,21 @@ class ArchiveRule(AWSProperty):
     }
 
 
+class Script(AWSProperty):
+    """
+    `Script <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dlm-lifecyclepolicy-script.html>`__
+    """
+
+    props: PropsDictType = {
+        "ExecuteOperationOnScriptFailure": (boolean, False),
+        "ExecutionHandler": (str, False),
+        "ExecutionHandlerService": (str, False),
+        "ExecutionTimeout": (integer, False),
+        "MaximumRetryCount": (integer, False),
+        "Stages": ([str], False),
+    }
+
+
 class CreateRule(AWSProperty):
     """
     `CreateRule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dlm-lifecyclepolicy-createrule.html>`__
@@ -138,6 +165,7 @@ class CreateRule(AWSProperty):
         "Interval": (validate_interval, False),
         "IntervalUnit": (validate_interval_unit, False),
         "Location": (str, False),
+        "Scripts": ([Script], False),
         "Times": ([str], False),
     }
 
@@ -245,11 +273,19 @@ class PolicyDetails(AWSProperty):
 
     props: PropsDictType = {
         "Actions": ([Action], False),
+        "CopyTags": (boolean, False),
+        "CreateInterval": (integer, False),
+        "CrossRegionCopyTargets": ([], False),
         "EventSource": (EventSource, False),
+        "Exclusions": (Exclusions, False),
+        "ExtendDeletion": (boolean, False),
         "Parameters": (Parameters, False),
+        "PolicyLanguage": (str, False),
         "PolicyType": (str, False),
         "ResourceLocations": ([str], False),
+        "ResourceType": (str, False),
         "ResourceTypes": ([str], False),
+        "RetainInterval": (integer, False),
         "Schedules": ([Schedule], False),
         "TargetTags": (validate_tags_or_list, False),
     }
@@ -263,9 +299,26 @@ class LifecyclePolicy(AWSObject):
     resource_type = "AWS::DLM::LifecyclePolicy"
 
     props: PropsDictType = {
+        "CopyTags": (boolean, False),
+        "CreateInterval": (integer, False),
+        "CrossRegionCopyTargets": ([], False),
+        "DefaultPolicy": (str, False),
         "Description": (str, False),
+        "Exclusions": (Exclusions, False),
         "ExecutionRoleArn": (str, False),
+        "ExtendDeletion": (boolean, False),
         "PolicyDetails": (PolicyDetails, False),
+        "RetainInterval": (integer, False),
         "State": (validate_state, False),
         "Tags": (validate_tags_or_list, False),
+    }
+
+
+class CrossRegionCopyTarget(AWSProperty):
+    """
+    `CrossRegionCopyTarget <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dlm-lifecyclepolicy-crossregioncopytarget.html>`__
+    """
+
+    props: PropsDictType = {
+        "TargetRegion": (str, False),
     }

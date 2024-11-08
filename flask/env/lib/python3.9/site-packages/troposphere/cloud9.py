@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -32,7 +32,7 @@ class EnvironmentEC2(AWSObject):
         "AutomaticStopTimeMinutes": (integer, False),
         "ConnectionType": (str, False),
         "Description": (str, False),
-        "ImageId": (str, False),
+        "ImageId": (str, True),
         "InstanceType": (str, True),
         "Name": (str, False),
         "OwnerArn": (str, False),

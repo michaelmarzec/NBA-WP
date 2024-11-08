@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -127,6 +127,17 @@ class Connection(AWSObject):
     }
 
 
+class LakeFormationConfiguration(AWSProperty):
+    """
+    `LakeFormationConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-crawler-lakeformationconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "AccountId": (str, False),
+        "UseLakeFormationCredentials": (boolean, False),
+    }
+
+
 class RecrawlPolicy(AWSProperty):
     """
     `RecrawlPolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-crawler-recrawlpolicy.html>`__
@@ -215,6 +226,7 @@ class JdbcTarget(AWSProperty):
 
     props: PropsDictType = {
         "ConnectionName": (str, False),
+        "EnableAdditionalMetadata": ([str], False),
         "Exclusions": ([str], False),
         "Path": (str, False),
     }
@@ -275,6 +287,7 @@ class Crawler(AWSObject):
         "CrawlerSecurityConfiguration": (str, False),
         "DatabaseName": (str, False),
         "Description": (str, False),
+        "LakeFormationConfiguration": (LakeFormationConfiguration, False),
         "Name": (str, False),
         "RecrawlPolicy": (RecrawlPolicy, False),
         "Role": (str, True),
@@ -283,6 +296,21 @@ class Crawler(AWSObject):
         "TablePrefix": (str, False),
         "Tags": (dict, False),
         "Targets": (Targets, True),
+    }
+
+
+class CustomEntityType(AWSObject):
+    """
+    `CustomEntityType <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-glue-customentitytype.html>`__
+    """
+
+    resource_type = "AWS::Glue::CustomEntityType"
+
+    props: PropsDictType = {
+        "ContextWords": ([str], False),
+        "Name": (str, False),
+        "RegexString": (str, False),
+        "Tags": (dict, False),
     }
 
 
@@ -304,6 +332,7 @@ class EncryptionAtRest(AWSProperty):
 
     props: PropsDictType = {
         "CatalogEncryptionMode": (str, False),
+        "CatalogEncryptionServiceRole": (str, False),
         "SseAwsKmsKeyId": (str, False),
     }
 
@@ -374,7 +403,7 @@ class DatabaseIdentifier(AWSProperty):
 
 class FederatedDatabase(AWSProperty):
     """
-    `FederatedDatabase <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-database-databaseinput-federateddatabase.html>`__
+    `FederatedDatabase <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-database-federateddatabase.html>`__
     """
 
     props: PropsDictType = {
@@ -430,6 +459,7 @@ class Database(AWSObject):
     props: PropsDictType = {
         "CatalogId": (str, True),
         "DatabaseInput": (DatabaseInput, True),
+        "DatabaseName": (str, False),
     }
 
 
@@ -518,7 +548,9 @@ class Job(AWSObject):
         "ExecutionClass": (str, False),
         "ExecutionProperty": (ExecutionProperty, False),
         "GlueVersion": (str, False),
+        "JobMode": (str, False),
         "LogUri": (str, False),
+        "MaintenanceWindow": (str, False),
         "MaxCapacity": (double, False),
         "MaxRetries": (double, False),
         "Name": (str, False),
@@ -964,6 +996,33 @@ class Table(AWSObject):
         "DatabaseName": (str, True),
         "OpenTableFormatInput": (OpenTableFormatInput, False),
         "TableInput": (TableInput, True),
+    }
+
+
+class TableOptimizerConfiguration(AWSProperty):
+    """
+    `TableOptimizerConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-tableoptimizer-tableoptimizerconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Enabled": (boolean, True),
+        "RoleArn": (str, True),
+    }
+
+
+class TableOptimizer(AWSObject):
+    """
+    `TableOptimizer <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-glue-tableoptimizer.html>`__
+    """
+
+    resource_type = "AWS::Glue::TableOptimizer"
+
+    props: PropsDictType = {
+        "CatalogId": (str, True),
+        "DatabaseName": (str, True),
+        "TableName": (str, True),
+        "TableOptimizerConfiguration": (TableOptimizerConfiguration, True),
+        "Type": (str, True),
     }
 
 

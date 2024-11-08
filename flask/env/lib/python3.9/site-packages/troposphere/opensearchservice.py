@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -9,6 +9,19 @@
 from . import AWSObject, AWSProperty, PropsDictType, Tags
 from .validators import boolean, integer
 from .validators.opensearchservice import validate_search_service_engine_version
+
+
+class JWTOptions(AWSProperty):
+    """
+    `JWTOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-opensearchservice-domain-jwtoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "Enabled": (boolean, False),
+        "PublicKey": (str, False),
+        "RolesKey": (str, False),
+        "SubjectKey": (str, False),
+    }
 
 
 class MasterUserOptions(AWSProperty):
@@ -60,8 +73,19 @@ class AdvancedSecurityOptionsInput(AWSProperty):
         "AnonymousAuthEnabled": (boolean, False),
         "Enabled": (boolean, False),
         "InternalUserDatabaseEnabled": (boolean, False),
+        "JWTOptions": (JWTOptions, False),
         "MasterUserOptions": (MasterUserOptions, False),
         "SAMLOptions": (SAMLOptions, False),
+    }
+
+
+class ColdStorageOptions(AWSProperty):
+    """
+    `ColdStorageOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-opensearchservice-domain-coldstorageoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "Enabled": (boolean, False),
     }
 
 
@@ -81,6 +105,7 @@ class ClusterConfig(AWSProperty):
     """
 
     props: PropsDictType = {
+        "ColdStorageOptions": (ColdStorageOptions, False),
         "DedicatedMasterCount": (integer, False),
         "DedicatedMasterEnabled": (boolean, False),
         "DedicatedMasterType": (str, False),
@@ -249,9 +274,11 @@ class Domain(AWSObject):
         "EBSOptions": (EBSOptions, False),
         "EncryptionAtRestOptions": (EncryptionAtRestOptions, False),
         "EngineVersion": (validate_search_service_engine_version, False),
+        "IPAddressType": (str, False),
         "LogPublishingOptions": (dict, False),
         "NodeToNodeEncryptionOptions": (NodeToNodeEncryptionOptions, False),
         "OffPeakWindowOptions": (OffPeakWindowOptions, False),
+        "SkipShardMigrationWait": (boolean, False),
         "SnapshotOptions": (SnapshotOptions, False),
         "SoftwareUpdateOptions": (SoftwareUpdateOptions, False),
         "Tags": (Tags, False),

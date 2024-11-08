@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -119,6 +119,7 @@ class Canary(AWSObject):
         "ExecutionRoleArn": (str, True),
         "FailureRetentionPeriod": (integer, False),
         "Name": (str, True),
+        "ResourcesToReplicateTags": ([str], False),
         "RunConfig": (RunConfig, False),
         "RuntimeVersion": (canary_runtime_version, True),
         "Schedule": (Schedule, True),

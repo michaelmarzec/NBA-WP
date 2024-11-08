@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -89,6 +89,7 @@ class Connector(AWSObject):
         "AccessRole": (str, True),
         "As2Config": (As2Config, False),
         "LoggingRole": (str, False),
+        "SecurityPolicyName": (str, False),
         "SftpConfig": (SftpConfig, False),
         "Tags": (Tags, False),
         "Url": (str, True),
@@ -151,6 +152,16 @@ class ProtocolDetails(AWSProperty):
     }
 
 
+class S3StorageOptions(AWSProperty):
+    """
+    `S3StorageOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-transfer-server-s3storageoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "DirectoryListingOptimization": (str, False),
+    }
+
+
 class WorkflowDetail(AWSProperty):
     """
     `WorkflowDetail <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-transfer-server-workflowdetail.html>`__
@@ -192,6 +203,7 @@ class Server(AWSObject):
         "PreAuthenticationLoginBanner": (str, False),
         "ProtocolDetails": (ProtocolDetails, False),
         "Protocols": ([str], False),
+        "S3StorageOptions": (S3StorageOptions, False),
         "SecurityPolicyName": (str, False),
         "StructuredLogDestinations": ([str], False),
         "Tags": (Tags, False),
@@ -207,6 +219,7 @@ class HomeDirectoryMapEntry(AWSProperty):
     props: PropsDictType = {
         "Entry": (str, True),
         "Target": (str, True),
+        "Type": (str, False),
     }
 
 
@@ -318,11 +331,11 @@ class DecryptStepDetails(AWSProperty):
     """
 
     props: PropsDictType = {
-        "DestinationFileLocation": (InputFileLocation, False),
+        "DestinationFileLocation": (InputFileLocation, True),
         "Name": (str, False),
         "OverwriteExisting": (str, False),
         "SourceFileLocation": (str, False),
-        "Type": (str, False),
+        "Type": (str, True),
     }
 
 

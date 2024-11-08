@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -23,6 +23,38 @@ from .validators.codebuild import (
     validate_status,
     validate_webhookfilter_type,
 )
+
+
+class VpcConfig(AWSProperty):
+    """
+    `VpcConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-vpcconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "SecurityGroupIds": ([str], False),
+        "Subnets": ([str], False),
+        "VpcId": (str, False),
+    }
+
+
+class Fleet(AWSObject):
+    """
+    `Fleet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codebuild-fleet.html>`__
+    """
+
+    resource_type = "AWS::CodeBuild::Fleet"
+
+    props: PropsDictType = {
+        "BaseCapacity": (integer, False),
+        "ComputeType": (str, False),
+        "EnvironmentType": (str, False),
+        "FleetServiceRole": (str, False),
+        "FleetVpcConfig": (VpcConfig, False),
+        "ImageId": (str, False),
+        "Name": (str, False),
+        "OverflowBehavior": (str, False),
+        "Tags": (Tags, False),
+    }
 
 
 class Artifacts(AWSProperty):
@@ -61,6 +93,16 @@ class EnvironmentVariable(AWSProperty):
         validate_environment_variable(self)
 
 
+class ProjectFleet(AWSProperty):
+    """
+    `ProjectFleet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-projectfleet.html>`__
+    """
+
+    props: PropsDictType = {
+        "FleetArn": (str, False),
+    }
+
+
 class RegistryCredential(AWSProperty):
     """
     `RegistryCredential <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-registrycredential.html>`__
@@ -81,6 +123,7 @@ class Environment(AWSProperty):
         "Certificate": (str, False),
         "ComputeType": (str, True),
         "EnvironmentVariables": (validate_environmentvariable_or_list, False),
+        "Fleet": (ProjectFleet, False),
         "Image": (str, True),
         "ImagePullCredentialsType": (validate_image_pull_credentials, False),
         "PrivilegedMode": (boolean, False),
@@ -192,6 +235,16 @@ class ProjectSourceVersion(AWSProperty):
     }
 
 
+class ScopeConfiguration(AWSProperty):
+    """
+    `ScopeConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-scopeconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Name": (str, True),
+    }
+
+
 class ProjectTriggers(AWSProperty):
     """
     `ProjectTriggers <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-projecttriggers.html>`__
@@ -200,6 +253,7 @@ class ProjectTriggers(AWSProperty):
     props: PropsDictType = {
         "BuildType": (str, False),
         "FilterGroups": (list, False),
+        "ScopeConfiguration": (ScopeConfiguration, False),
         "Webhook": (boolean, False),
     }
 
@@ -262,18 +316,6 @@ class Source(AWSProperty):
 
     def validate(self):
         validate_source(self)
-
-
-class VpcConfig(AWSProperty):
-    """
-    `VpcConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-vpcconfig.html>`__
-    """
-
-    props: PropsDictType = {
-        "SecurityGroupIds": ([str], False),
-        "Subnets": ([str], False),
-        "VpcId": (str, False),
-    }
 
 
 class Project(AWSObject):

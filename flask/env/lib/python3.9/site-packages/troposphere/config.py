@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -195,6 +195,29 @@ class RecordingGroup(AWSProperty):
     }
 
 
+class RecordingModeOverride(AWSProperty):
+    """
+    `RecordingModeOverride <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-config-configurationrecorder-recordingmodeoverride.html>`__
+    """
+
+    props: PropsDictType = {
+        "Description": (str, False),
+        "RecordingFrequency": (str, True),
+        "ResourceTypes": ([str], True),
+    }
+
+
+class RecordingMode(AWSProperty):
+    """
+    `RecordingMode <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-config-configurationrecorder-recordingmode.html>`__
+    """
+
+    props: PropsDictType = {
+        "RecordingFrequency": (str, True),
+        "RecordingModeOverrides": ([RecordingModeOverride], False),
+    }
+
+
 class ConfigurationRecorder(AWSObject):
     """
     `ConfigurationRecorder <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-config-configurationrecorder.html>`__
@@ -205,6 +228,7 @@ class ConfigurationRecorder(AWSObject):
     props: PropsDictType = {
         "Name": (str, False),
         "RecordingGroup": (RecordingGroup, False),
+        "RecordingMode": (RecordingMode, False),
         "RoleARN": (str, True),
     }
 

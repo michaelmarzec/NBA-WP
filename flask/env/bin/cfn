@@ -1,4 +1,4 @@
-#!/Users/michaelmarzec/Documents/GitHub/NBA-WP/flask/env/bin/python3
+#!/Users/michael.marzec/Documents/GitHub/NBA-Age-Analysis/flask/env/bin/python3.9
 
 import argparse
 import sys

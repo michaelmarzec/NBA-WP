@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -126,6 +126,17 @@ class NotificationWithSubscribers(AWSProperty):
     }
 
 
+class ResourceTag(AWSProperty):
+    """
+    `ResourceTag <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-budgets-budgetsaction-resourcetag.html>`__
+    """
+
+    props: PropsDictType = {
+        "Key": (str, True),
+        "Value": (str, True),
+    }
+
+
 class Budget(AWSObject):
     """
     `Budget <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-budgets-budget.html>`__
@@ -136,6 +147,7 @@ class Budget(AWSObject):
     props: PropsDictType = {
         "Budget": (BudgetData, True),
         "NotificationsWithSubscribers": ([NotificationWithSubscribers], False),
+        "ResourceTags": ([ResourceTag], False),
     }
 
 
@@ -224,5 +236,6 @@ class BudgetsAction(AWSObject):
         "Definition": (Definition, True),
         "ExecutionRoleArn": (str, True),
         "NotificationType": (str, True),
+        "ResourceTags": ([ResourceTag], False),
         "Subscribers": ([ActionSubscriber], True),
     }

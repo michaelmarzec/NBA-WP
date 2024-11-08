@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -7,7 +7,7 @@
 
 
 from . import AWSObject, AWSProperty, PropsDictType, Tags
-from .validators import boolean, integer
+from .validators import boolean, double, integer
 
 
 class Channel(AWSObject):
@@ -29,12 +29,69 @@ class Channel(AWSObject):
     }
 
 
+class Video(AWSProperty):
+    """
+    `Video <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ivs-encoderconfiguration-video.html>`__
+    """
+
+    props: PropsDictType = {
+        "Bitrate": (integer, False),
+        "Framerate": (double, False),
+        "Height": (integer, False),
+        "Width": (integer, False),
+    }
+
+
+class EncoderConfiguration(AWSObject):
+    """
+    `EncoderConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ivs-encoderconfiguration.html>`__
+    """
+
+    resource_type = "AWS::IVS::EncoderConfiguration"
+
+    props: PropsDictType = {
+        "Name": (str, False),
+        "Tags": (Tags, False),
+        "Video": (Video, False),
+    }
+
+
 class PlaybackKeyPair(AWSObject):
     """
     `PlaybackKeyPair <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ivs-playbackkeypair.html>`__
     """
 
     resource_type = "AWS::IVS::PlaybackKeyPair"
+
+    props: PropsDictType = {
+        "Name": (str, False),
+        "PublicKeyMaterial": (str, False),
+        "Tags": (Tags, False),
+    }
+
+
+class PlaybackRestrictionPolicy(AWSObject):
+    """
+    `PlaybackRestrictionPolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ivs-playbackrestrictionpolicy.html>`__
+    """
+
+    resource_type = "AWS::IVS::PlaybackRestrictionPolicy"
+
+    props: PropsDictType = {
+        "AllowedCountries": ([str], True),
+        "AllowedOrigins": ([str], True),
+        "EnableStrictOriginEnforcement": (boolean, False),
+        "Name": (str, False),
+        "Tags": (Tags, False),
+    }
+
+
+class PublicKey(AWSObject):
+    """
+    `PublicKey <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ivs-publickey.html>`__
+    """
+
+    resource_type = "AWS::IVS::PublicKey"
 
     props: PropsDictType = {
         "Name": (str, False),
@@ -101,6 +158,58 @@ class RecordingConfiguration(AWSObject):
         "RenditionConfiguration": (RenditionConfiguration, False),
         "Tags": (Tags, False),
         "ThumbnailConfiguration": (ThumbnailConfiguration, False),
+    }
+
+
+class AutoParticipantRecordingConfiguration(AWSProperty):
+    """
+    `AutoParticipantRecordingConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ivs-stage-autoparticipantrecordingconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "MediaTypes": ([str], False),
+        "StorageConfigurationArn": (str, True),
+    }
+
+
+class Stage(AWSObject):
+    """
+    `Stage <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ivs-stage.html>`__
+    """
+
+    resource_type = "AWS::IVS::Stage"
+
+    props: PropsDictType = {
+        "AutoParticipantRecordingConfiguration": (
+            AutoParticipantRecordingConfiguration,
+            False,
+        ),
+        "Name": (str, False),
+        "Tags": (Tags, False),
+    }
+
+
+class S3StorageConfiguration(AWSProperty):
+    """
+    `S3StorageConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ivs-storageconfiguration-s3storageconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "BucketName": (str, True),
+    }
+
+
+class StorageConfiguration(AWSObject):
+    """
+    `StorageConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ivs-storageconfiguration.html>`__
+    """
+
+    resource_type = "AWS::IVS::StorageConfiguration"
+
+    props: PropsDictType = {
+        "Name": (str, False),
+        "S3": (S3StorageConfiguration, True),
+        "Tags": (Tags, False),
     }
 
 

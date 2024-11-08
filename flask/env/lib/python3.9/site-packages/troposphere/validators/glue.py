@@ -26,6 +26,7 @@ def connection_type_validator(type):
         "MONGODB",
         "NETWORK",
         "SFTP",
+        "SNOWFLAKE",
     ]
     if type not in valid_types:
         raise ValueError("% is not a valid value for ConnectionType" % type)
@@ -80,6 +81,7 @@ def trigger_type_validator(type):
         "SCHEDULED",
         "CONDITIONAL",
         "ON_DEMAND",
+        "EVENT",
     ]
     if type not in valid_types:
         raise ValueError("% is not a valid value for Type" % type)
