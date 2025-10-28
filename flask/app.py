@@ -88,6 +88,39 @@ def index():
 
 	return render_template('wp_table.html',  table=json_table, context=context)
 
+@app.route('/24_25', methods=['GET', 'POST'])
+def index_24_25():
+	df = main('24_25_wp_final_results.csv')
+
+	table_description = {"TEAM": ("string", "Team Name"),
+						 "WT": ("number", "Winning Time %"),
+						 "LT": ("number", "Losing Time %"),
+						 "TIE_PC": ("number", "Tie Time %"),
+						 "Wins": ("number", "Wins"),
+						 "Losses": ("number", "Losses"),
+						 "TIE_PC": ("number", "Tie Time %"),
+						 "WP": ("number", "Win %"),
+						 "PT_DIFF": ("number", "Point Diff"),
+						 "EXPECTED_WIN": ("number", "Expected Wins"),
+						 "EXPECTED_WP": ("number", "Expected Win %"),
+						 "WT_v_WP": ("number", "Win Time % vs Win %"),
+						 "WT_v_EXP_WP": ("number", "Win Time % vs Expected Win %")
+						 }
+
+	data_table = gviz_api.DataTable(table_description)
+	table_data = df.to_dict(orient='records')
+	data_table.LoadData(table_data)
+	json_table = data_table.ToJSon(columns_order=(
+	"TEAM", "WT", "LT", "TIE_PC", "Wins", "Losses", "WP", "PT_DIFF", "EXPECTED_WIN", "EXPECTED_WP", "WT_v_WP",
+	"WT_v_EXP_WP"))
+
+	today = date.today()
+	update_date = today.strftime("%m/%d/%Y")
+
+	context = {"update_date": update_date}
+
+	return render_template('wp_table_2425.html', table=json_table, context=context)
+
 @app.route('/22_23', methods=['GET','POST'])
 def index_22_23():
 	df = main('22_23_wp_final_results.csv')
