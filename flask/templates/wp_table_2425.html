@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Win Percentage Analysis | Win Time Tracking 2024-25</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['table']});
@@ -22,56 +27,65 @@
         formatter.format(json_data, 10)
         formatter.format(json_data, 11)
 
-        table.draw(json_data, {showRowNumber: true, sortColumn:0, sortAscending: true, height: '100%'}); //width: '100%'
+        table.draw(json_data, {
+            showRowNumber: true, 
+            sortColumn: 0, 
+            sortAscending: true, 
+            height: '100%',
+            cssClassNames: {
+                headerRow: 'table-header',
+                tableRow: 'table-row',
+                oddTableRow: 'table-row-odd',
+                selectedTableRow: 'table-row-selected',
+                hoverTableRow: 'table-row-hover',
+                headerCell: 'table-header-cell',
+                tableCell: 'table-cell'
+            }
+        });
     }
-
     </script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
-    <meta charset="UTF-8">
-    <title>NBA-WP</title>
 </head>
 <body>
     <header>
-        <p class="header"> NBA WP% Analysis</p>
-        <p class="sub-header"> Insight into the amount of time an NBA team spends winnning</p>
-        <div class ="year_select_nav">
-        <label>Season</label>
-        <select name="season_select" onchange="location = this.value;">
-            <option value="{{url_for('index')}}">2025-26</option>
-            <option selected="selected" value="{{url_for('index_24_25')}}">2024-25</option>
-            <option value="{{url_for('index_23_24')}}">2023-24</option>
-            <option value="{{url_for('index_22_23')}}">2022-23</option>
-        </select>
+        <h1 class="header">NBA Win Percentage Analysis</h1>
+        <p class="sub-header">Tracking the amount of time NBA teams spend winning throughout games</p>
+        <div class="year_select_nav">
+            <label>Season:</label>
+            <select name="season_select" onchange="location = this.value;">
+                <option value="{{url_for('index')}}">2025-26</option>
+                <option selected="selected" value="{{url_for('index_24_25')}}">2024-25</option>
+                <option value="{{url_for('index_23_24')}}">2023-24</option>
+                <option value="{{url_for('index_22_23')}}">2022-23</option>
+            </select>
         </div>
-        <br></br>
     </header>
-    <div 
-    id="table_div">
-    </div>
-    <div class="glossary">
-        <h4><i>Glossary</i></h4>
-        <ul class="glossary_list"><b>Winning Time %:</b> Percent of game time spent leading the game. </ul>
-        <ul class="glossary_list"><b>Losing Time %:</b> Percent of game time spent losing the game. </ul>
-        <ul class="glossary_list"><b>Tie Time %:</b> Percent of game time spent with a tie game. </ul>
-        <ul class="glossary_list"><b>Wins:</b> Number of games won. </ul>
-        <ul class="glossary_list"><b>Losses:</b> Number of games lost. </ul>
-        <ul class="glossary_list"><b>Win %:</b> Team's actual winning percentage (Games Won / Games Played). </ul>
-        <ul class="glossary_list"><b>Point Diff:</b> Team's average point differential </ul>
-        <ul class="glossary_list"><b>Expected Wins:</b> Team's expected number of wins based on point differential.</ul>
-        <ul class="glossary_list"><b>Expected Win %:</b> Team's expected winning percentage based on point differential.</ul>
-        <ul class="glossary_list"><b>Winning Time % vs Win %:</b> Difference between team's winning time percent and actual win percent. </ul>
-        <ul class="glossary_list"><b>Winning Time % vs Expected Win %:</b> Difference between team's winning time percent and expected win percent. </ul>
-    </div>
+    
+    <div id="table_div"></div>
+    
+    <section class="glossary">
+        <h4>Glossary</h4>
+        <ul>
+            <li class="glossary_list"><b>Winning Time %:</b> Percent of game time spent leading the game.</li>
+            <li class="glossary_list"><b>Losing Time %:</b> Percent of game time spent losing the game.</li>
+            <li class="glossary_list"><b>Tie Time %:</b> Percent of game time spent with a tie game.</li>
+            <li class="glossary_list"><b>Wins:</b> Number of games won.</li>
+            <li class="glossary_list"><b>Losses:</b> Number of games lost.</li>
+            <li class="glossary_list"><b>Win %:</b> Team's actual winning percentage (Games Won / Games Played).</li>
+            <li class="glossary_list"><b>Point Diff:</b> Team's average point differential.</li>
+            <li class="glossary_list"><b>Expected Wins:</b> Team's expected number of wins based on point differential.</li>
+            <li class="glossary_list"><b>Expected Win %:</b> Team's expected winning percentage based on point differential.</li>
+            <li class="glossary_list"><b>Winning Time % vs Win %:</b> Difference between team's winning time percent and actual win percent.</li>
+            <li class="glossary_list"><b>Winning Time % vs Expected Win %:</b> Difference between team's winning time percent and expected win percent.</li>
+        </ul>
+    </section>
+    
+    <footer class="footer">
+        <p>Last Updated: {{ context.update_date | safe }}</p>
+        <p>Author: Michael Marzec | <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+        <p>Personal Website: <a href="https://michaelmarzec.github.io">michaelmarzec.github.io</a></p>
+        <p>NBA-Age Analysis: <a href="https://nbaage.com">nbaage.com</a></p>
+        <p>GitHub: <a href="https://github.com/michaelmarzec/NBA-WP">NBA-WP Repository</a></p>
+        <p>Data: <a href="https://cleaningtheglass.com/">CleaningTheGlass</a> & <a href="https://www.basketball-reference.com/">Basketball-Reference</a></p>
+    </footer>
 </body>
-<footer class="footer">
-    <p>Last Updated: {{ context.update_date | safe }}</p>
-    <p>Author: Michael Marzec</p>
-    <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
-    <p>Personal Website: <a href="https://michaelmarzec.github.io">https://michaelmarzec.github.io</a></p>
-    <p>NBA-Age Analysis: <a href="https://nbaage.com">nbaage.com</a></p>
-    <p>Github: <a href="https://github.com/michaelmarzec/NBA-WP">https://github.com/michaelmarzec/NBA-WP</a></p>
-    <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com</a><a> & </a><a href="https://www.basketball-reference.com/">https://www.basketball-reference.com</a></p>
-</footer>
 </html>
-

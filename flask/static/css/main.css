@@ -1,158 +1,236 @@
-/* includes alternating gray and white with on-hover color */
+/* Modern NBA Win Percentage Analysis - Dark Elegant Theme */
 
-table {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    font-size: 42px;
+    font-weight: 700;
+    color: #1a202c;
     text-align: center;
-    font-size: 11pt;
-    font-family: Arial;
-    border-collapse: collapse; 
-    border: 1px solid silver;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
 }
 
-td, th {
-    padding: 5px;
+.sub-header {
+    font-size: 18px;
+    color: #4a5568;
+    text-align: center;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
-tr:nth-child(even) {
-    background: #E0E0E0;
+/* Year Selection Dropdown */
+.year_select_nav {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.year_select_nav label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-right: 10px;
+}
+
+.year_select_nav select {
+    padding: 10px 20px;
+    font-size: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #2d3748;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    font-weight: 500;
+}
+
+.year_select_nav select:hover {
+    border-color: #4a4a4a;
+}
+
+.year_select_nav select:focus {
+    border-color: #4a4a4a;
+    box-shadow: 0 0 0 3px rgba(74, 74, 74, 0.1);
+}
+
+/* Table Container */
+#table_div {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+}
+
+th {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    color: white;
+    padding: 15px 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #2d3748;
+    font-size: 14px;
 }
 
 tr:hover {
-    background: silver;
+    background: #f7fafc;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-.redirect{
-    font-size: 18px;
+tr:nth-child(even) {
+    background: #fafafa;
+}
+
+tr:nth-child(even):hover {
+    background: #f7fafc;
+}
+
+/* Row Numbers */
+td:first-child {
+    font-weight: 600;
+    color: #4a4a4a;
+}
+
+/* Glossary Section */
+.glossary {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.glossary h4 {
+    font-size: 20px;
+    color: #1a202c;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.glossary_list {
+    list-style: none;
+    padding: 8px 0;
+    color: #4a5568;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.glossary_list b {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+/* Footer */
+.footer {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 25px;
     text-align: center;
-    padding-bottom: 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 25px;
 }
 
-.footer{
-    clear: both;
-    font-size:  16px;
-    color: #555555;
-    text-align: left;
-    padding-top: 2px;
-    padding-right: 5px;
-    padding-bottom: 2px;
-    padding-left: 5px;
-    background-color: #f2f2f2;
-    line-height: 1.5em;
+.footer p {
+    font-size: 13px;
+    color: #718096;
+    margin: 5px 0;
+    line-height: 1.6;
 }
 
-.header{
-    clear: both;
-    font-size:  40px;
-    color: #212121;
-    text-align: center;
-    margin:  0;
+.footer a {
+    color: #4a5568;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.sub-header{
-    clear: both;
-    font-size:  20px;
-    color: #212121;
-    text-align: center;
-    font-style: italic;
+.footer a:hover {
+    color: #2d3748;
+    text-decoration: underline;
 }
 
-.year_select_nav{
-/*    clear: both;*/
-/*    font-size:  20px;*/
-/*    color: #212121;*/
-    text-align: center;
-/*    font-style: italic;*/
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header {
+        font-size: 32px;
+    }
+    
+    .sub-header {
+        font-size: 16px;
+    }
+    
+    #table_div {
+        padding: 15px;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 8px 5px;
+    }
 }
 
+/* Custom scrollbar for table */
+#table_div::-webkit-scrollbar {
+    height: 8px;
+}
 
-/*a {
-  color: #212121;
-  font-size: 19px;
-  font-weight: 750;
-  text-decoration: none; }
-  a:active, a:focus, a:hover {
-    color: #20638f;
-    /*text-decoration: underline;} */
+#table_div::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
 
+#table_div::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+    border-radius: 4px;
+}
 
-  /*.navigation .navigation-menu-button {
-    display: block;
-    float: right;
-    margin: 0;
-    font-size: 1.5em;
-    padding-top: 0.5em; }
-    @media screen and (min-width: 768px) {
-      .navigation .navigation-menu-button {
-        display: none; } }
-  .navigation .navigation-wrapper {
-    max-width: 48em;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative; }
-    .navigation .navigation-wrapper::after {
-      clear: both;
-      content: "";
-      display: table; }
-    .navigation .navigation-wrapper::after {
-      clear: both;
-      content: "";
-      display: table; }
-  .navigation .logo {
-    float: left;
-    height: 4em; }
-    @media screen and (min-width: 768px) {
-      .navigation .logo {
-        padding-left: 16px; } }
-    .navigation .logo img {
-      max-height: 2.5em;
-      margin-top: 0.75em;
-      padding-right: 1em; }
-    .navigation .logo span {
-      font-size: 1.25em; }
-  .navigation nav {
-    float: none;
-    padding: 1.25em 0; }
-    @media screen and (min-width: 768px) {
-      .navigation nav {
-        float: right;
-        line-height: 1.5em; } }
-  .navigation ul.navigation-menu {
-    clear: both;
-    display: none;
-    margin: 0 auto;
-    overflow: visible;
-    padding: 0;
-    width: 100%; }
-    @media screen and (min-width: 768px) {
-      .navigation ul.navigation-menu {
-        display: block;
-        margin: 0;
-        padding: 0; } }
-    .navigation ul.navigation-menu.show {
-      display: block; }
-  .navigation ul li.nav-link {
-    display: block;
-    text-align: right;
-    width: 100%;
-    padding: 0.25em 0; }
-    @media screen and (min-width: 768px) {
-      .navigation ul li.nav-link {
-        background: transparent;
-        display: inline;
-        text-decoration: none;
-        width: auto; } }
-  .navigation li.nav-link a {
-    display: inline-block; }
-    @media screen and (min-width: 768px) {
-      .navigation li.nav-link a {
-        padding-right: 1.5em; } }
-  @media screen and (min-width: 768px) {
-    .navigation li.nav-link:last-child a {
-      padding-right: 1em; } }
-
-
-
-  
-  
-
-*/
+#table_div::-webkit-scrollbar-thumb:hover {
+    background: #2d2d2d;
+}

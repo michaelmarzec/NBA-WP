@@ -1,50 +1,48 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/scatter_plot.css') }}">
     <meta charset="UTF-8">
-    <title>NBA-WP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Win % Analysis | Win Time vs Win % Scatter Plot</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/scatter_plot.css') }}">
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 </head>
-<script src="https://code.highcharts.com/maps/highmaps.js"></script>
-<script src="https://code.highcharts.com/maps/modules/data.js"></script>
-<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
-<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-
 <body>
     <header>
-        <p class="header"> NBA WP% Analysis</p>
-        <p class="sub-header"> Insight into the amount of time an NBA team spends winnning</p>
+        <h1 class="header">NBA Win Percentage Analysis</h1>
+        <p class="sub-header">Visualizing the relationship between time spent winning and actual win percentage</p>
     </header>
-    <div class="redirect">
-        <a href="{{url_for('index')}}">WP Table</a>&emsp;&emsp;<a href="{{url_for('scatter_plot')}}">Win Time % vs Win % Plot</a>
-        <br></br>
-</div>
+    
+    <nav class="redirect">
+        <a href="{{url_for('index')}}">WP Table</a>
+        <a href="{{url_for('scatter_plot')}}">Win Time % vs Win % Plot</a>
+    </nav>
+
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+        <p class="highcharts-description">
+            This scatter plot visualizes the relationship between the percentage of time teams spend
+            winning during games (Winning Time %) and their actual winning percentage (Win %).
+            The visualization helps identify teams that perform efficiently when leading versus
+            teams that may struggle to maintain leads or close out games.
+        </p>
+    </figure>
+
+    <footer class="footer">
+        <p>Author: Michael Marzec | <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+        <p>Personal Website: <a href="https://michaelmarzec.github.io">michaelmarzec.github.io</a></p>
+        <p>NBA-Age Analysis: <a href="https://nbaage.com">nbaage.com</a></p>
+        <p>GitHub: <a href="https://github.com/michaelmarzec/NBA-WP">NBA-WP Repository</a></p>
+        <p>Data: <a href="https://cleaningtheglass.com/">CleaningTheGlass</a> & <a href="https://www.basketball-reference.com/">Basketball-Reference</a></p>
+    </footer>
 </body>
-
-
-<figure class="highcharts-figure">
-    <div id="container"></div>
-    <p class="highcharts-description">
-        Scatter charts are often used to visualize the relationships
-        between data in two dimensions. This chart is visualizing
-        olympic contestants by sport, showing how various sports prefer different
-        characteristics.
-    </p>
-</figure>
-
-<div class="footer">
-    <p>Author: Michael Marzec</p>
-    <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
-    <p>Infrastructure: <a href="https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure">https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure/</a></p>
-    <p>Github: <a href="https://github.com/michaelmarzec/NBA-Age-Analysis/">https://github.com/michaelmarzec/NBA-Age-Analysis/</a></p>
-    <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com/</a></p>
-</div>
-</div>
 </html>
